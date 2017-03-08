@@ -630,8 +630,6 @@ html, body {
   padding-top: 0 !important;
 }
 .postman-button {
-  float: right;
-  text-align: center;
-  vertical-align: top;
-  margin-top: -5px;
+  vertical-align: middle;
+  display: inline-block;
 }

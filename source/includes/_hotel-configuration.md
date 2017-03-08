@@ -10,7 +10,7 @@ para recuperar los elementos a mapear. En resumen:
 
 ### HotelConfigurationRequest
 
-> Ejemplo petición HotelConfigurationRequest para recuperar la configuración del hotel 1234 <span class="postman-button">[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/495ff7995b655b745365)</span>
+> Ejemplo petición HotelConfigurationRequest para recuperar la configuración del hotel 1234 &nbsp;&nbsp;<span class="postman-button">[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/495ff7995b655b745365)</span>
 
 ````xml
 <?xml version="1.0" encoding="UTF-8"?>
