@@ -522,7 +522,7 @@ html, body {
 
 .content {
   pre, blockquote {
-    background-color: $code-bg;
+    background-color: #393939;
     color: #fff;
 
     padding: 2em $main-padding;
@@ -624,4 +624,8 @@ html, body {
 
 .highlight, .highlight .w {
   background-color: $code-bg;
+}
+
+.tab-xml {
+  padding-top: 0 !important;
 }
