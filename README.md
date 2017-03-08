@@ -34,6 +34,7 @@ Abrir **http://localhost:4567** y Whoa!!
 Slate tiene soporte para publicar directamente los cambios en github pages. Información detallada [aquí](https://github.com/lord/slate/wiki/Deploying-Slate)
 
 Pasos a seguir:
+
 1. Commit and push de los cambios: `git commit, git push`
 2. Ejecutar `./deploy.sh`
 

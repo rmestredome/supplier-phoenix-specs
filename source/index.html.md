@@ -6,7 +6,7 @@ language_tabs:
 
 toc_footers:
   - <a href='mailto:soporte@hotetec.com'>soporte@hotetec.com</a>
-  - <a href='https:/xml.hotetec.com'>Acceso Extranet</a>
+  - <a href='https://xml.hotetec.com'>Acceso Extranet</a>
   - <a href='http://www.hotetec.com'>www.hotetec.com</a>
 
 includes:
