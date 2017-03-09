@@ -1,14 +1,4 @@
-# hotelConfiguration
-
-Mensaje utilizado para obtener la configuración del hotel. A través de este mensaje, el proveedor podrá obtener todos 
-los códigos y tipología para poder gestionar el hotel vía PUSH. Típicamente, este mensaje es el que utiliza el proveedor 
-para recuperar los elementos a mapear. En resumen:
-
-- Habitaciones del hotel así como sus ocupaciones permitidas
-- Regímenes alimenticios
-- Tarifas gestionables vía PUSH
-
-### HotelConfigurationRequest
+# HotelConfiguration
 
 > Ejemplo petición HotelConfigurationRequest para recuperar la configuración del hotel 1234 &nbsp;&nbsp;<span class="postman-button">[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/495ff7995b655b745365)</span>
 
@@ -24,16 +14,19 @@ para recuperar los elementos a mapear. En resumen:
 </HotelConfigurationRequest>
 ````
 
-Mensaje petición para recuperar la configuración de los hoteles del proveedor. 
-Opcionalmente se puede filtrar por código de hotel (hotelCode). 
-Si no se indica, en la respuesta aparecerán todos los hoteles que gestiona el proveedor.
- 
-Elemento | Tipo | Obl? | Restricciones | Descripción
---------- | ----------- | ----------- | ----------- | -----------
-credentials | **Credentials** | Sí | |Credenciales de autenticación del usuario (Ver Autenticación)
-hotelCode | *Integer* | No | |Código de hotel
-
-### HotelConfigurationResponse
+````shell
+curl 
+   -H "Content-type:text/xml"  
+   -d "<HotelConfigurationRequest>
+			<credentials>
+				<vendorCode>FOO</vendorCode>
+				<user>BAR</user>
+				<password>FOOBAR</password>
+			</credentials>
+			<hotelCode>1234</hotelCode>
+		</HotelConfigurationRequest>" 
+	http://xml.hotetec.com/supplier-api/supplier/xmlservice.srv
+````
 
 > Ejemplo respuesta HotelConfigurationResponse
 
@@ -107,12 +100,104 @@ hotelCode | *Integer* | No | |Código de hotel
     </hotelConfig>
 </HotelConfigurationResponse>
 ````
+````shell
+"<?xml version="1.0" encoding="UTF-8"?>
+<HotelConfigurationResponse>
+    <sessionId>SUP#FOO#123456789</sessionId>
+    <hotelConfig>
+        <hotelCode>1234</hotelCode>
+        <name>Hotetec Test</name>
+        <currencyCode>EUR</currencyCode>
+        <roomConfig>
+            <roomCode>SGL#STD</roomCode>
+            <name>Individual Estándar</name>
+            <occupancy>
+                <adults>1</adults>
+                <children>0</children>
+            </occupancy>
+            <occupancy>
+                <adults>1</adults>
+                <children>1</children>
+            </occupancy>
+        </roomConfig>        
+        <roomConfig>
+            <roomCode>DBL#STD</roomCode>
+            <name>Doble Estándar</name>
+            <occupancy>
+                <adults>1</adults>
+                <children>0</children>
+            </occupancy>
+            <occupancy>
+                <adults>2</adults>
+                <children>0</children>
+            </occupancy>
+            <occupancy>
+                <adults>2</adults>
+                <children>1</children>
+            </occupancy>
+        </roomConfig>
+        <mealPlanConfig>
+            <mealPlanCode>RO</mealPlanCode>
+            <name>Sólo alojamiento</name>
+        </mealPlanConfig>
+        <mealPlanConfig>
+            <mealPlanCode>BB</mealPlanCode>
+            <name>Alojamiento y desayuno</name>
+        </mealPlanConfig>
+        <mealPlanConfig>
+            <mealPlanCode>HB</mealPlanCode>
+            <name>Media pensión</name>
+        </mealPlanConfig>
+        <inventoryConfig>
+            <inventoryCode>1</inventoryCode>
+            <name>Inventario general</name>
+        </inventoryConfig>
+        <rateConfig>
+            <rateCode>BASE</rateCode>
+            <name>Tarifa Base</name>
+            <inventoryCode>1</inventoryCode>
+            <cancelPolicyType>Variable</cancelPolicyType>
+        </rateConfig>
+        <rateConfig>
+            <rateCode>OFENRE</rateCode>
+            <name>Tarifa No Reembolsable</name>
+            <inventoryCode>1</inventoryCode>
+            <rateProperty>
+                <name>Destacada</name>
+            </rateProperty>
+            <cancelPolicyType>NonRefundable</cancelPolicyType>
+        </rateConfig>        
+    </hotelConfig>
+</HotelConfigurationResponse>"
+````
+
+Mensaje utilizado para obtener la configuración del hotel. A través de este mensaje, el proveedor podrá obtener todos 
+los códigos y tipología para poder gestionar el hotel vía PUSH. Típicamente, este mensaje es el que utiliza el proveedor 
+para recuperar los elementos a mapear. En resumen:
+
+- Habitaciones del hotel así como sus ocupaciones permitidas
+- Regímenes alimenticios
+- Tarifas gestionables vía PUSH
+
+### HotelConfigurationRequest
+
+Mensaje petición para recuperar la configuración de los hoteles del proveedor. 
+Opcionalmente se puede filtrar por código de hotel (hotelCode). 
+Si no se indica, en la respuesta aparecerán todos los hoteles que gestiona el proveedor.
+ 
+Elemento | Tipo | Obl? | Descripción
+--------- | ----------- | ----------- | -----------
+credentials | **Credentials** | Sí |Credenciales de autenticación del usuario (Ver Autenticación)
+hotelCode | *Integer* | No |Código de hotel
+
+### HotelConfigurationResponse
 
 Mensaje respuesta que contiene la configuración de los hoteles del proveedor (modalidades, regímenes, tarifas...)
 
 Elemento | Tipo | Obl? | Descripción
 --------- | ----------- | ----------- | -----------
-hotelConfig[] | **HotelConfig** | |Elemento que contiene la configuración del hotel
+sessionId | *String* | Sí |Identificador de la sesión que ha procesado la transacción
+hotelConfig[] | **HotelConfig** | No |Elemento que contiene la configuración del hotel
 - hotelCode | *Integer* | Sí | Código de hotel
 - name | *String* | Sí |Nombre de hotel
 - currencyCode | *String* | Sí | Código de divisa (Códigos  ISO 4217 )

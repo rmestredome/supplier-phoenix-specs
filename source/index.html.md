@@ -3,6 +3,7 @@ title: API PUSH Supplier-Phoenix
 
 language_tabs:
   - xml
+  - shell
 
 toc_footers:
   - <a href='mailto:soporte@hotetec.com'>soporte@hotetec.com</a>
@@ -15,6 +16,7 @@ includes:
   - conectivity
   - authentication
   - hotel-configuration
+  - roomRates-update
 
 search: true
 ---
