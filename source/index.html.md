@@ -17,6 +17,7 @@ includes:
   - authentication
   - hotel-configuration
   - roomRates-update
+  - roomRates-retrieval
 
 search: true
 ---

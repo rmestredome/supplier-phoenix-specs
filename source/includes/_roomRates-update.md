@@ -11,13 +11,14 @@
         <user>BAR</user>
         <password>FOOBAR</password>
     </credentials>   
-    <roomRate rateCode="NORMAL" roomCode="SGL#STD">
+    <hotelCode>1234</hotelCode>
+    <roomRate rateCode="BASE" roomCode="SGL#STD">
         <dateFrom>01/01/2016</dateFrom>
         <dateTo>02/01/2016</dateTo>
         <availableQuota>9</availableQuota>
         <status>Open</status>
     </roomRate>
-    <roomRate rateCode="NORMAL" roomCode="DBL#STD">
+    <roomRate rateCode="BASE" roomCode="DBL#STD">
         <dateFrom>01/01/2016</dateFrom>
         <dateTo>01/01/2016</dateTo>
         <availableQuota>5</availableQuota>
@@ -35,13 +36,14 @@ curl
                <user>BAR</user>
                <password>FOOBAR</password>
            </credentials>   
-           <roomRate rateCode="NORMAL" roomCode="SGL#STD">
+           <hotelCode>1234</hotelCode>
+           <roomRate rateCode="BASE" roomCode="SGL#STD">
                <dateFrom>01/01/2016</dateFrom>
                <dateTo>02/01/2016</dateTo>
                <availableQuota>9</availableQuota>
                <status>Open</status>
            </roomRate>
-           <roomRate rateCode="NORMAL" roomCode="DBL#STD">
+           <roomRate rateCode="BASE" roomCode="DBL#STD">
                <dateFrom>01/01/2016</dateFrom>
                <dateTo>01/01/2016</dateTo>
                <availableQuota>5</availableQuota>
@@ -51,7 +53,7 @@ curl
 	http://xml.hotetec.com/supplier-api/supplier/xmlservice.srv
 ````
 
-> Ejemplo RoomRatesUpdateRequest actualizando inventario, precios y restricciones para los régimenes RO y BB de la tarifa NORMAL, modalidad DBL#STD
+> Ejemplo RoomRatesUpdateRequest actualizando inventario, precios y restricciones para los régimenes RO y BB de la tarifa BASE, modalidad DBL#STD
 &nbsp;&nbsp;<span class="postman-button">[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/495ff7995b655b745365)</span>
 
 ````xml
@@ -62,7 +64,8 @@ curl
         <user>BAR</user>
         <password>FOOBAR</password>
     </credentials>
-    <roomRate rateCode="NORMAL" roomCode="DBL#STD">
+    <hotelCode>1234</hotelCode>
+    <roomRate rateCode="BASE" roomCode="DBL#STD">
         <dateFrom>01/01/2016</dateFrom>
         <dateTo>07/01/2016</dateTo>
         <availableQuota>10</availableQuota>
@@ -120,7 +123,8 @@ curl
                <user>BAR</user>
                <password>FOOBAR</password>
            </credentials>
-           <roomRate rateCode="NORMAL" roomCode="DBL#STD">
+           <hotelCode>1234</hotelCode>
+           <roomRate rateCode="BASE" roomCode="DBL#STD">
                <dateFrom>01/01/2016</dateFrom>
                <dateTo>07/01/2016</dateTo>
                <availableQuota>10</availableQuota>
@@ -187,7 +191,7 @@ curl
 ````
 
 Mensaje utilizado para la actualización de inventario y tarifas (precios, paros de venta y restricciones) de un hotel.
-Si únicamente se quiere actualizar inventario, no será necesario informar <mealPlan>
+Si únicamente se quiere actualizar inventario, no será necesario informar mealPlan
 
 ### RoomRatesUpdateRequest
 
@@ -196,6 +200,7 @@ Mensaje petición de actualización de inventario y tarifas de hotel.
 Elemento | Tipo | Obl? |  Descripción
 --------- | ----------- | ----------- | -----------
 credentials | **Credentials** | Sí |Credenciales de autenticación del usuario (Ver Autenticación)
+hotelCode | *Integer* | Sí |Código de hotel
 roomRate[] | **RoomRate** | Sí | Información asociada a una combinación de tarifa y modalidad de hotel
 &nbsp;&nbsp;- @rateCode| *String* | Sí | Código de tarifa
 &nbsp;&nbsp;- @roomCode| *String* | Sí | Código de modalidad
