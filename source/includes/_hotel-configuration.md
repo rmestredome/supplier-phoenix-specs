@@ -200,7 +200,7 @@ sessionId | *String* | Sí |Identificador de la sesión que ha procesado la tran
 hotelConfig[] | **HotelConfig** | No |Elemento que contiene la configuración del hotel
 - hotelCode | *Integer* | Sí | Código de hotel
 - name | *String* | Sí |Nombre de hotel
-- currencyCode | *String* | Sí | Código de divisa (Códigos  ISO 4217 )
+- currencyCode | *String* | Sí | Código de divisa (Códigos ISO 4217)
 - roomConfig[] | **RoomConfig** | Sí | Configuración de la modalidad de hotel
 &nbsp;&nbsp;- roomCode | *String* | Sí |Código de modalidad
 &nbsp;&nbsp;- name | *String* | Sí | Nombre de modalidad
