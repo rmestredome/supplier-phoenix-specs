@@ -10,9 +10,21 @@
 </credentials>
 ````
 
-Todas las peticiones contienen el elemento xml credentials (ejemplo a la derecha), el cuál contiene las credenciales de autenticación.
+````json
+{
+   "credentials": {
+       "vendorCode": "FOO",
+       "user": "BAR",
+       "password": "FOOBAR"
+   }
+}
+````
 
-- **URL**: https://xml.hotetec.com/supplier-api/supplier/xmlservice.srv
+Todas las peticiones contienen el elemento credentials (ejemplo a la derecha), el cuál contiene las credenciales de autenticación.
+El proveedor puede elegir si utilizar XML o JSON:
+
+- URL XML: **https://xml.hotetec.com/supplier-api/supplier/xmlservice.srv**
+- URL JSON: **https://xml.hotetec.com/supplier-api/supplier/jsonservice.srv**
 
 <aside class="notice">Por favor, solicitar credenciales de acceso a <b>soporte@hotetec.com</b></aside>
 

@@ -3,7 +3,7 @@ title: API PUSH Supplier-Phoenix
 
 language_tabs:
   - xml
-  - shell
+  - json
 
 toc_footers:
   - <a href='mailto:soporte@hotetec.com'>soporte@hotetec.com</a>
@@ -19,6 +19,7 @@ includes:
   - roomRates-update
   - roomRates-retrieval
   - booking-retrieval
+  - booking-notification
 
 search: true
 ---
