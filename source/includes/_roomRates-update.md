@@ -5,24 +5,28 @@
 
 ````xml
 <?xml version="1.0" encoding="UTF-8"?>
-<RoomRatesUpdateRequest>   
+<RoomRatesUpdateRequest>
     <credentials>
         <vendorCode>FOO</vendorCode>
         <user>BAR</user>
         <password>FOOBAR</password>
-    </credentials>   
+    </credentials>
     <hotelCode>1234</hotelCode>
     <roomRate rateCode="BASE" roomCode="SGL#STD">
-        <dateFrom>01/01/2016</dateFrom>
-        <dateTo>02/01/2016</dateTo>
-        <availableQuota>9</availableQuota>
-        <status>Open</status>
+        <roomRateDate dateFrom="01/01/2016" dateTo="02/01/2016">
+            <availableQuota>9</availableQuota>
+            <status>Open</status>
+        </roomRateDate>
+        <roomRateDate dateFrom="03/01/2016" dateTo="04/01/2016">
+            <availableQuota>9</availableQuota>
+            <status>Open</status>
+        </roomRateDate>
     </roomRate>
     <roomRate rateCode="BASE" roomCode="DBL#STD">
-        <dateFrom>01/01/2016</dateFrom>
-        <dateTo>01/01/2016</dateTo>
-        <availableQuota>5</availableQuota>
-        <status>Open</status>
+        <roomRateDate dateFrom="01/01/2016" dateTo="02/01/2016">
+            <availableQuota>9</availableQuota>
+            <status>5</status>
+        </roomRateDate>
     </roomRate>
 </RoomRatesUpdateRequest>
 ````
@@ -40,18 +44,30 @@
       {
         "rateCode": "BASE",
         "roomCode": "SGL#STD",
-        "dateFrom": "01/01/2016",
-        "dateTo": "02/01/2016",
-        "availableQuota": "9",
-        "status": "Open"
+        "roomRateDate": [
+          {
+            "dateFrom": "01/01/2016",
+            "dateTo": "02/01/2016",
+            "availableQuota": "9",
+            "status": "Open"
+          },
+          {
+            "dateFrom": "03/01/2016",
+            "dateTo": "04/01/2016",
+            "availableQuota": "9",
+            "status": "Open"
+          }
+        ]
       },
       {
         "rateCode": "BASE",
         "roomCode": "DBL#STD",
-        "dateFrom": "01/01/2016",
-        "dateTo": "01/01/2016",
-        "availableQuota": "5",
-        "status": "Open"
+        "roomRateDate": {
+          "-dateFrom": "01/01/2016",
+          "-dateTo": "02/01/2016",
+          "availableQuota": "9",
+          "status": "5"
+        }
       }
     ]
   }
@@ -71,50 +87,74 @@
     </credentials>
     <hotelCode>1234</hotelCode>
     <roomRate rateCode="BASE" roomCode="DBL#STD">
-        <dateFrom>01/01/2016</dateFrom>
-        <dateTo>07/01/2016</dateTo>
-        <availableQuota>10</availableQuota>
-        <status>Open</status>
-        <mealPlan code="RO">
+        <roomRateDate dateFrom="01/01/2016" dateTo="07/01/2016">
+            <availableQuota>10</availableQuota>
             <status>Open</status>
-            <minimumStay>2</minimumStay>
-            <maximumStay>7</maximumStay>
-            <closedOnCheckIn>false</closedOnCheckIn>
-            <closedOnCheckOut>false</closedOnCheckOut>
-            <release>0</release>
-            <price>
-                <adults>2</adults>
-                <children>0</children>
-                <amount>100.0</amount>
+            <mealPlan code="RO">
                 <status>Open</status>
-            </price>
-            <price>
-                <adults>2</adults>
-                <children>1</children>
-                <amount>125.0</amount>
+                <minimumStay>2</minimumStay>
+                <maximumStay>7</maximumStay>
+                <closedOnCheckIn>false</closedOnCheckIn>
+                <closedOnCheckOut>false</closedOnCheckOut>
+                <release>0</release>
+                <price>
+                    <adults>2</adults>
+                    <children>0</children>
+                    <amount>100.0</amount>
+                    <status>Open</status>
+                </price>
+                <price>
+                    <adults>2</adults>
+                    <children>1</children>
+                    <amount>125.0</amount>
+                    <status>Open</status>
+                </price>
+            </mealPlan>
+            <mealPlan code="BB">
                 <status>Open</status>
-            </price>
-        </mealPlan>
-        <mealPlan code="BB">
+                <minimumStay>2</minimumStay>
+                <maximumStay>7</maximumStay>
+                <closedOnCheckIn>false</closedOnCheckIn>
+                <closedOnCheckOut>false</closedOnCheckOut>
+                <release>7</release>
+                <price>
+                    <adults>2</adults>
+                    <children>0</children>
+                    <amount>130.0</amount>
+                    <status>Open</status>
+                </price>
+                <price>
+                    <adults>2</adults>
+                    <children>1</children>
+                    <amount>150</amount>
+                    <status>Open</status>
+                </price>
+            </mealPlan>
+        </roomRateDate>
+        <roomRateDate dateFrom="08/01/2016" dateTo="09/01/2016">
+            <availableQuota>5</availableQuota>
             <status>Open</status>
-            <minimumStay>2</minimumStay>
-            <maximumStay>7</maximumStay>
-            <closedOnCheckIn>false</closedOnCheckIn>
-            <closedOnCheckOut>false</closedOnCheckOut>
-            <release>7</release>
-            <price>
-                <adults>2</adults>
-                <children>0</children>
-                <amount>130.0</amount>
+            <mealPlan code="RO">
                 <status>Open</status>
-            </price>
-            <price>
-                <adults>2</adults>
-                <children>1</children>
-                <amount>150</amount>
-                <status>Open</status>
-            </price>
-        </mealPlan>
+                <minimumStay>2</minimumStay>
+                <maximumStay>7</maximumStay>
+                <closedOnCheckIn>false</closedOnCheckIn>
+                <closedOnCheckOut>false</closedOnCheckOut>
+                <release>0</release>
+                <price>
+                    <adults>2</adults>
+                    <children>0</children>
+                    <amount>110.0</amount>
+                    <status>Open</status>
+                </price>
+                <price>
+                    <adults>2</adults>
+                    <children>1</children>
+                    <amount>135.0</amount>
+                    <status>Open</status>
+                </price>
+            </mealPlan>
+        </roomRateDate>
     </roomRate>
 </RoomRatesUpdateRequest>
 ````
@@ -131,56 +171,89 @@
     "roomRate": {
       "rateCode": "BASE",
       "roomCode": "DBL#STD",
-      "dateFrom": "01/01/2016",
-      "dateTo": "07/01/2016",
-      "availableQuota": "10",
-      "status": "Open",
-      "mealPlan": [
+      "roomRateDate": [
         {
-          "code": "RO",
+          "dateFrom": "01/01/2016",
+          "dateTo": "07/01/2016",
+          "availableQuota": "10",
           "status": "Open",
-          "minimumStay": "2",
-          "maximumStay": "7",
-          "closedOnCheckIn": "false",
-          "closedOnCheckOut": "false",
-          "release": "0",
-          "price": [
+          "mealPlan": [
             {
-              "adults": "2",
-              "children": "0",
-              "amount": "100.0",
-              "status": "Open"
+              "code": "RO",
+              "status": "Open",
+              "minimumStay": "2",
+              "maximumStay": "7",
+              "closedOnCheckIn": "false",
+              "closedOnCheckOut": "false",
+              "release": "0",
+              "price": [
+                {
+                  "adults": "2",
+                  "children": "0",
+                  "amount": "100.0",
+                  "status": "Open"
+                },
+                {
+                  "adults": "2",
+                  "children": "1",
+                  "amount": "125.0",
+                  "status": "Open"
+                }
+              ]
             },
             {
-              "adults": "2",
-              "children": "1",
-              "amount": "125.0",
-              "status": "Open"
+              "code": "BB",
+              "status": "Open",
+              "minimumStay": "2",
+              "maximumStay": "7",
+              "closedOnCheckIn": "false",
+              "closedOnCheckOut": "false",
+              "release": "7",
+              "price": [
+                {
+                  "adults": "2",
+                  "children": "0",
+                  "amount": "130.0",
+                  "status": "Open"
+                },
+                {
+                  "adults": "2",
+                  "children": "1",
+                  "amount": "150",
+                  "status": "Open"
+                }
+              ]
             }
           ]
         },
         {
-          "code": "BB",
+          "dateFrom": "08/01/2016",
+          "dateTo": "09/01/2016",
+          "availableQuota": "5",
           "status": "Open",
-          "minimumStay": "2",
-          "maximumStay": "7",
-          "closedOnCheckIn": "false",
-          "closedOnCheckOut": "false",
-          "release": "7",
-          "price": [
-            {
-              "adults": "2",
-              "children": "0",
-              "amount": "130.0",
-              "status": "Open"
-            },
-            {
-              "adults": "2",
-              "children": "1",
-              "amount": "150",
-              "status": "Open"
-            }
-          ]
+          "mealPlan": {
+            "-code": "RO",
+            "status": "Open",
+            "minimumStay": "2",
+            "maximumStay": "7",
+            "closedOnCheckIn": "false",
+            "closedOnCheckOut": "false",
+            "release": "0",
+            "price": [
+              {
+                "adults": "2",
+                "children": "0",
+                "amount": "110.0",
+                "status": "Open"
+              },
+              {
+                "adults": "2",
+                "children": "1",
+                "amount": "135.0",
+                "status": "Open"
+              }
+            ]
+          }
         }
       ]
     }
@@ -219,23 +292,24 @@ hotelCode | *Integer* | Sí |Código de hotel
 roomRate[] | **RoomRate** | Sí | Información asociada a una combinación de tarifa y modalidad de hotel
 ↳ @rateCode| *String* | Sí | Código de tarifa
 ↳ @roomCode| *String* | Sí | Código de modalidad
-↳ dateFrom| *Date* | Sí | Fecha desde (dd/MM/yyyy, rangos cerrados)
-↳ dateTo| *Date* | Sí | Fecha hasta (dd/MM/yyyy, rangos cerrados)
-↳ availableQuota| *Integer* | Sí | Unidades de cupo disponible
-↳ status| *Enum* | Sí | Estado del inventario <sup>1</sup> 
-↳ mealPlan[]| **MealPlan** | No | Información asociada al régimen alimenticio
-↳↳ @code| *String* | Sí | Código de régimen alimenticio
-↳↳ status| *Enum* | Sí | Estado del régimen <sup>1</sup>
-↳↳ minimumStay| *Integer* | Sí | Días de estancia mínima (0: No hay estancia mínima)
-↳↳ maximumStay| *Integer* | Sí | Días de estancia máxima (0: No hay límite de estancia)
-↳↳ release| *Integer* | Sí | Días de release (0: No hay release)
-↳↳ closedOnCheckIn| *Boolean* | Sí | Indica si no está permitida la entrada
-↳↳ closedOnCheckOut| *Boolean* | Sí | Indica si no está permitida la salida
-↳↳ price[]| **Price** | Sí | Precio para una ocupación
-↳↳↳ adults| *Integer* | Sí | Número de adultos
-↳↳↳ children| *Integer* | Sí | Número de niños
-↳↳↳ amount| *Double* | Sí | Precio para el total de la ocupación (#.##)
-↳↳↳ status| *Enum* | Sí | Estado de la ocupación <sup>1</sup>
+↳ roomRateDate| **RomRateDate** | Sí | Información relativa a un rango de fechas
+↳↳ @dateFrom| *Date* | Sí | Fecha desde (dd/MM/yyyy, rangos cerrados)
+↳↳ @dateTo| *Date* | Sí | Fecha hasta (dd/MM/yyyy, rangos cerrados)
+↳↳ availableQuota| *Integer* | Sí | Unidades de cupo disponible
+↳↳ status| *Enum* | Sí | Estado del inventario <sup>1</sup> 
+↳↳ mealPlan[]| **MealPlan** | No | Información asociada al régimen alimenticio
+↳↳↳ @code| *String* | Sí | Código de régimen alimenticio
+↳↳↳ status| *Enum* | Sí | Estado del régimen <sup>1</sup>
+↳↳↳ minimumStay| *Integer* | Sí | Días de estancia mínima (0: No hay estancia mínima)
+↳↳↳ maximumStay| *Integer* | Sí | Días de estancia máxima (0: No hay límite de estancia)
+↳↳↳ release| *Integer* | Sí | Días de release (0: No hay release)
+↳↳↳ closedOnCheckIn| *Boolean* | Sí | Indica si no está permitida la entrada
+↳↳↳ closedOnCheckOut| *Boolean* | Sí | Indica si no está permitida la salida
+↳↳↳ price[]| **Price** | Sí | Precio para una ocupación
+↳↳↳↳ adults| *Integer* | Sí | Número de adultos
+↳↳↳↳ children| *Integer* | Sí | Número de niños
+↳↳↳↳ amount| *Double* | Sí | Precio para el total de la ocupación (#.##)
+↳↳↳↳ status| *Enum* | Sí | Estado de la ocupación <sup>1</sup>
 
 <aside class="notice">
 <sup>1</sup>&nbsp;&nbsp;&nbsp; Posibles valores, <b>Open</b>: a la venta; <b>Closed</b>: Cerrado; <b>OnRequest</b>: Se permite reservar, pero bajo petición.
