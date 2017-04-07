@@ -366,7 +366,7 @@ booking[] | **Booking** | No | Información de una reserva de hotel
 ↳↳ amount| *Double* | Sí | Importe de la habitación reservada (#.##)
 ↳↳ roomRateDay[]| **RoomRateDay** | Sí | Desglose de reserva por día, informando la tarifa y precio correspondiente a cada día de la estancia
 ↳↳↳ day| *Date* | Sí | Día de la estancia (dd/MM/yyy)
-↳↳↳ rateCode| *String* | Sí | Código de tarifa
+↳↳↳ rateCode| *String* | No | Código de tarifa
 ↳↳↳ amount| *String* | Sí | Importe del día
 ↳↳ guest[]| **Guest** | Sí | Pasajero de la reserva
 ↳↳↳ @id| *Integer* | Sí | Identificador del pasajero

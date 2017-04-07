@@ -86,12 +86,14 @@
             <rateCode>BASE</rateCode>
             <name>Tarifa Base</name>
             <inventoryCode>1</inventoryCode>
+            <managedByPush>true</managedByPush>
             <cancelPolicyType>Variable</cancelPolicyType>
         </rateConfig>
         <rateConfig>
             <rateCode>OFENRE</rateCode>
             <name>Tarifa No Reembolsable</name>
             <inventoryCode>1</inventoryCode>
+            <managedByPush>true</managedByPush>
             <rateProperty>
                 <name>Destacada</name>
             </rateProperty>
@@ -165,12 +167,14 @@
           "rateCode": "BASE",
           "name": "Tarifa Base",
           "inventoryCode": "1",
+          "managedByPush": "true",
           "cancelPolicyType": "Variable"
         },
         {
           "rateCode": "OFENRE",
           "name": "Tarifa No Reembolsable",
           "inventoryCode": "1",
+          "managedByPush": "true",
           "rateProperty": { "name": "Destacada" },
           "cancelPolicyType": "NonRefundable"
         }
@@ -186,7 +190,7 @@ para recuperar los elementos a mapear. En resumen:
 
 - Habitaciones del hotel así como sus ocupaciones permitidas
 - Regímenes alimenticios
-- Tarifas gestionables vía PUSH
+- Tarifas del hotel, indicando las que son gestionables a traves de PUSH (managedByPush)
 
 ### HotelConfigurationRequest
 
@@ -228,6 +232,7 @@ rateConfig[] | **RateConfig** | Sí | Configuración de las tarifas del hotel
 ↳ rateCode | *String* | Sí |Código de tarifa
 ↳ name | *String* | Sí | Nombre de tarifa
 ↳ inventoryCode | *Integer* | Sí | Inventario asociado a la tarifa
+↳ managedByPush | *Boolean* | Sí | Indica si la tarifa es gestionable a través de PUSH. Si se informa false, no se podrán realizar actualizaciones sobre la misma a través del API
 ↳ rateProperty | **RateProperty** | No | Propiedad de la tarifa
 ↳↳ name | **String** | Sí | Nombre de la propiedad
 ↳↳ value | **String** | No | Valor de la propiedad. Ej: Propiedad Mayores de, value 55
@@ -246,6 +251,6 @@ Generalmente, el valor será false.
 
 <aside class="notice">
 <sup>3</sup>&nbsp;&nbsp;&nbsp;Por norma general, el hotel trabaja con un único inventario y todas la tarifas utilizan el mismo.
-En el caso de que el hotel utilice varios, con el inventoryCode podrá distinguir que inventario utiliza cada tarifa.
+En el caso de que el hotel utilice varios, con el inventoryCode se podrá distinguir que inventario utiliza cada tarifa.
 </aside>
 
