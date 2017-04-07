@@ -267,7 +267,7 @@ gestionando el hotel a través de la extranet web. Ambos modos de mantenimiento 
 </tr>
 </thead><tbody>
 <tr>
-<td>07/03/2017</td>
+<td>07/04/2017</td>
 <td>Tomeu Roig</td>
 <td>1.0.0</td>
 <td>Especificaciones PUSH de la API Supplier-Phoenix</td>
@@ -396,12 +396,14 @@ El proveedor puede elegir si utilizar XML o JSON:</p>
             <span class="nt">&lt;rateCode&gt;</span>BASE<span class="nt">&lt;/rateCode&gt;</span>
             <span class="nt">&lt;name&gt;</span>Tarifa Base<span class="nt">&lt;/name&gt;</span>
             <span class="nt">&lt;inventoryCode&gt;</span>1<span class="nt">&lt;/inventoryCode&gt;</span>
+            <span class="nt">&lt;managedByPush&gt;</span>true<span class="nt">&lt;/managedByPush&gt;</span>
             <span class="nt">&lt;cancelPolicyType&gt;</span>Variable<span class="nt">&lt;/cancelPolicyType&gt;</span>
         <span class="nt">&lt;/rateConfig&gt;</span>
         <span class="nt">&lt;rateConfig&gt;</span>
             <span class="nt">&lt;rateCode&gt;</span>OFENRE<span class="nt">&lt;/rateCode&gt;</span>
             <span class="nt">&lt;name&gt;</span>Tarifa No Reembolsable<span class="nt">&lt;/name&gt;</span>
             <span class="nt">&lt;inventoryCode&gt;</span>1<span class="nt">&lt;/inventoryCode&gt;</span>
+            <span class="nt">&lt;managedByPush&gt;</span>true<span class="nt">&lt;/managedByPush&gt;</span>
             <span class="nt">&lt;rateProperty&gt;</span>
                 <span class="nt">&lt;name&gt;</span>Destacada<span class="nt">&lt;/name&gt;</span>
             <span class="nt">&lt;/rateProperty&gt;</span>
@@ -473,12 +475,14 @@ El proveedor puede elegir si utilizar XML o JSON:</p>
           </span><span class="s2">"rateCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BASE"</span><span class="p">,</span><span class="w">
           </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tarifa Base"</span><span class="p">,</span><span class="w">
           </span><span class="s2">"inventoryCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"managedByPush"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w">
           </span><span class="s2">"cancelPolicyType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Variable"</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="p">{</span><span class="w">
           </span><span class="s2">"rateCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OFENRE"</span><span class="p">,</span><span class="w">
           </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Tarifa No Reembolsable"</span><span class="p">,</span><span class="w">
           </span><span class="s2">"inventoryCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"managedByPush"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w">
           </span><span class="s2">"rateProperty"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Destacada"</span><span class="w"> </span><span class="p">},</span><span class="w">
           </span><span class="s2">"cancelPolicyType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"NonRefundable"</span><span class="w">
         </span><span class="p">}</span><span class="w">
@@ -494,7 +498,7 @@ para recuperar los elementos a mapear. En resumen:</p>
 <ul>
 <li>Habitaciones del hotel así como sus ocupaciones permitidas</li>
 <li>Regímenes alimenticios</li>
-<li>Tarifas gestionables vía PUSH</li>
+<li>Tarifas del hotel, indicando las que son gestionables a traves de PUSH (managedByPush)</li>
 </ul>
 
 <h3 id="hotelconfigurationrequest">HotelConfigurationRequest</h3>
@@ -676,6 +680,12 @@ Si no se indica, en la respuesta aparecerán todos los hoteles que gestiona el p
 <td>Inventario asociado a la tarifa</td>
 </tr>
 <tr>
+<td>↳ managedByPush</td>
+<td><em>Boolean</em></td>
+<td>Sí</td>
+<td>Indica si la tarifa es gestionable a través de PUSH. Si se informa false, no se podrán realizar actualizaciones sobre la misma a través del API</td>
+</tr>
+<tr>
 <td>↳ rateProperty</td>
 <td><strong>RateProperty</strong></td>
 <td>No</td>
@@ -713,7 +723,7 @@ Generalmente, el valor será false.
 
 <aside class="notice">
 <sup>3</sup>&nbsp;&nbsp;&nbsp;Por norma general, el hotel trabaja con un único inventario y todas la tarifas utilizan el mismo.
-En el caso de que el hotel utilice varios, con el inventoryCode podrá distinguir que inventario utiliza cada tarifa.
+En el caso de que el hotel utilice varios, con el inventoryCode se podrá distinguir que inventario utiliza cada tarifa.
 </aside>
 
           <h1 id="roomratesupdate">RoomRatesUpdate</h1>
@@ -723,25 +733,31 @@ En el caso de que el hotel utilice varios, con el inventoryCode podrá distingui
 &nbsp;&nbsp;<span class="postman-button"><a href="https://app.getpostman.com/run-collection/495ff7995b655b745365"><img src="https://run.pstmn.io/button.svg" alt="Run in Postman" /></a></span></p>
 </blockquote>
 <pre class="highlight xml tab-xml"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
-<span class="nt">&lt;RoomRatesUpdateRequest&gt;</span>   
+<span class="nt">&lt;RoomRatesUpdateRequest&gt;</span>
     <span class="nt">&lt;credentials&gt;</span>
         <span class="nt">&lt;vendorCode&gt;</span>FOO<span class="nt">&lt;/vendorCode&gt;</span>
         <span class="nt">&lt;user&gt;</span>BAR<span class="nt">&lt;/user&gt;</span>
         <span class="nt">&lt;password&gt;</span>FOOBAR<span class="nt">&lt;/password&gt;</span>
-    <span class="nt">&lt;/credentials&gt;</span>   
+    <span class="nt">&lt;/credentials&gt;</span>
     <span class="nt">&lt;hotelCode&gt;</span>1234<span class="nt">&lt;/hotelCode&gt;</span>
-    <span class="nt">&lt;roomRate</span> <span class="na">rateCode=</span><span class="s">"BASE"</span> <span class="na">roomCode=</span><span class="s">"SGL#STD"</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;dateFrom&gt;</span>01/01/2016<span class="nt">&lt;/dateFrom&gt;</span>
-        <span class="nt">&lt;dateTo&gt;</span>02/01/2016<span class="nt">&lt;/dateTo&gt;</span>
-        <span class="nt">&lt;availableQuota&gt;</span>9<span class="nt">&lt;/availableQuota&gt;</span>
-        <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-    <span class="nt">&lt;/roomRate&gt;</span>
-    <span class="nt">&lt;roomRate</span> <span class="na">rateCode=</span><span class="s">"BASE"</span> <span class="na">roomCode=</span><span class="s">"DBL#STD"</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;dateFrom&gt;</span>01/01/2016<span class="nt">&lt;/dateFrom&gt;</span>
-        <span class="nt">&lt;dateTo&gt;</span>01/01/2016<span class="nt">&lt;/dateTo&gt;</span>
-        <span class="nt">&lt;availableQuota&gt;</span>5<span class="nt">&lt;/availableQuota&gt;</span>
-        <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-    <span class="nt">&lt;/roomRate&gt;</span>
+    <span class="nt">&lt;rate</span> <span class="na">rateCode=</span><span class="s">"BASE"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;room</span> <span class="na">roomCode=</span><span class="s">"SGL#STD"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;roomRateDate</span> <span class="na">dateFrom=</span><span class="s">"01/01/2016"</span> <span class="na">dateTo=</span><span class="s">"02/01/2016"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;availableQuota&gt;</span>9<span class="nt">&lt;/availableQuota&gt;</span>
+                <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
+            <span class="nt">&lt;/roomRateDate&gt;</span>
+            <span class="nt">&lt;roomRateDate</span> <span class="na">dateFrom=</span><span class="s">"03/01/2016"</span> <span class="na">dateTo=</span><span class="s">"04/01/2016"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;availableQuota&gt;</span>9<span class="nt">&lt;/availableQuota&gt;</span>
+                <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
+            <span class="nt">&lt;/roomRateDate&gt;</span>
+        <span class="nt">&lt;/room&gt;</span>
+        <span class="nt">&lt;room</span> <span class="na">roomCode=</span><span class="s">"DBL#STD"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;roomRateDate</span> <span class="na">dateFrom=</span><span class="s">"01/01/2016"</span> <span class="na">dateTo=</span><span class="s">"02/01/2016"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;availableQuota&gt;</span>9<span class="nt">&lt;/availableQuota&gt;</span>
+                <span class="nt">&lt;status&gt;</span>5<span class="nt">&lt;/status&gt;</span>
+            <span class="nt">&lt;/roomRateDate&gt;</span>
+        <span class="nt">&lt;/room&gt;</span>
+    <span class="nt">&lt;/rate&gt;</span>
 <span class="nt">&lt;/RoomRatesUpdateRequest&gt;</span>
 </code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"RoomRatesUpdateRequest"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -751,24 +767,37 @@ En el caso de que el hotel utilice varios, con el inventoryCode podrá distingui
       </span><span class="s2">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FOOBAR"</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="s2">"hotelCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1234"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"roomRate"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"rateCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BASE"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"roomCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SGL#STD"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"dateFrom"</span><span class="p">:</span><span class="w"> </span><span class="s2">"01/01/2016"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"dateTo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"02/01/2016"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"availableQuota"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
-      </span><span class="p">},</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"rateCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BASE"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"roomCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DBL#STD"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"dateFrom"</span><span class="p">:</span><span class="w"> </span><span class="s2">"01/01/2016"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"dateTo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"01/01/2016"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"availableQuota"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
-      </span><span class="p">}</span><span class="w">
-    </span><span class="p">]</span><span class="w">
+    </span><span class="s2">"rate"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"rateCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BASE"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"room"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"roomCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SGL#STD"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"roomRateDate"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"dateFrom"</span><span class="p">:</span><span class="w"> </span><span class="s2">"01/01/2016"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"dateTo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"02/01/2016"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"availableQuota"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"dateFrom"</span><span class="p">:</span><span class="w"> </span><span class="s2">"03/01/2016"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"dateTo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"04/01/2016"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"availableQuota"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">]</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"roomCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DBL#STD"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"roomRateDate"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"dateFrom"</span><span class="p">:</span><span class="w"> </span><span class="s2">"01/01/2016"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"dateTo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"02/01/2016"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"availableQuota"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
@@ -784,52 +813,75 @@ En el caso de que el hotel utilice varios, con el inventoryCode podrá distingui
         <span class="nt">&lt;password&gt;</span>FOOBAR<span class="nt">&lt;/password&gt;</span>
     <span class="nt">&lt;/credentials&gt;</span>
     <span class="nt">&lt;hotelCode&gt;</span>1234<span class="nt">&lt;/hotelCode&gt;</span>
-    <span class="nt">&lt;roomRate</span> <span class="na">rateCode=</span><span class="s">"BASE"</span> <span class="na">roomCode=</span><span class="s">"DBL#STD"</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;dateFrom&gt;</span>01/01/2016<span class="nt">&lt;/dateFrom&gt;</span>
-        <span class="nt">&lt;dateTo&gt;</span>07/01/2016<span class="nt">&lt;/dateTo&gt;</span>
-        <span class="nt">&lt;availableQuota&gt;</span>10<span class="nt">&lt;/availableQuota&gt;</span>
-        <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-        <span class="nt">&lt;mealPlan</span> <span class="na">code=</span><span class="s">"RO"</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-            <span class="nt">&lt;minimumStay&gt;</span>2<span class="nt">&lt;/minimumStay&gt;</span>
-            <span class="nt">&lt;maximumStay&gt;</span>7<span class="nt">&lt;/maximumStay&gt;</span>
-            <span class="nt">&lt;closedOnCheckIn&gt;</span>false<span class="nt">&lt;/closedOnCheckIn&gt;</span>
-            <span class="nt">&lt;closedOnCheckOut&gt;</span>false<span class="nt">&lt;/closedOnCheckOut&gt;</span>
-            <span class="nt">&lt;release&gt;</span>0<span class="nt">&lt;/release&gt;</span>
-            <span class="nt">&lt;price&gt;</span>
-                <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
-                <span class="nt">&lt;children&gt;</span>0<span class="nt">&lt;/children&gt;</span>
-                <span class="nt">&lt;amount&gt;</span>100.0<span class="nt">&lt;/amount&gt;</span>
+    <span class="nt">&lt;rate</span> <span class="na">rateCode=</span><span class="s">"BASE"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;room</span> <span class="na">roomCode=</span><span class="s">"DBL#STD"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;roomRateDate</span> <span class="na">dateFrom=</span><span class="s">"01/01/2016"</span> <span class="na">dateTo=</span><span class="s">"07/01/2016"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;availableQuota&gt;</span>10<span class="nt">&lt;/availableQuota&gt;</span>
                 <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-            <span class="nt">&lt;/price&gt;</span>
-            <span class="nt">&lt;price&gt;</span>
-                <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
-                <span class="nt">&lt;children&gt;</span>1<span class="nt">&lt;/children&gt;</span>
-                <span class="nt">&lt;amount&gt;</span>125.0<span class="nt">&lt;/amount&gt;</span>
+                <span class="nt">&lt;mealPlan</span> <span class="na">code=</span><span class="s">"RO"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;minimumStay&gt;</span>2<span class="nt">&lt;/minimumStay&gt;</span>
+                    <span class="nt">&lt;maximumStay&gt;</span>7<span class="nt">&lt;/maximumStay&gt;</span>
+                    <span class="nt">&lt;closedOnCheckIn&gt;</span>false<span class="nt">&lt;/closedOnCheckIn&gt;</span>
+                    <span class="nt">&lt;closedOnCheckOut&gt;</span>false<span class="nt">&lt;/closedOnCheckOut&gt;</span>
+                    <span class="nt">&lt;release&gt;</span>0<span class="nt">&lt;/release&gt;</span>
+                    <span class="nt">&lt;price&gt;</span>
+                        <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
+                        <span class="nt">&lt;children&gt;</span>0<span class="nt">&lt;/children&gt;</span>
+                        <span class="nt">&lt;amount&gt;</span>100.0<span class="nt">&lt;/amount&gt;</span>
+                        <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
+                    <span class="nt">&lt;/price&gt;</span>
+                    <span class="nt">&lt;price&gt;</span>
+                        <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
+                        <span class="nt">&lt;children&gt;</span>1<span class="nt">&lt;/children&gt;</span>
+                        <span class="nt">&lt;amount&gt;</span>125.0<span class="nt">&lt;/amount&gt;</span>
+                        <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
+                    <span class="nt">&lt;/price&gt;</span>
+                <span class="nt">&lt;/mealPlan&gt;</span>
+                <span class="nt">&lt;mealPlan</span> <span class="na">code=</span><span class="s">"BB"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;minimumStay&gt;</span>2<span class="nt">&lt;/minimumStay&gt;</span>
+                    <span class="nt">&lt;maximumStay&gt;</span>7<span class="nt">&lt;/maximumStay&gt;</span>
+                    <span class="nt">&lt;closedOnCheckIn&gt;</span>false<span class="nt">&lt;/closedOnCheckIn&gt;</span>
+                    <span class="nt">&lt;closedOnCheckOut&gt;</span>false<span class="nt">&lt;/closedOnCheckOut&gt;</span>
+                    <span class="nt">&lt;release&gt;</span>7<span class="nt">&lt;/release&gt;</span>
+                    <span class="nt">&lt;price&gt;</span>
+                        <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
+                        <span class="nt">&lt;children&gt;</span>0<span class="nt">&lt;/children&gt;</span>
+                        <span class="nt">&lt;amount&gt;</span>130.0<span class="nt">&lt;/amount&gt;</span>
+                        <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
+                    <span class="nt">&lt;/price&gt;</span>
+                    <span class="nt">&lt;price&gt;</span>
+                        <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
+                        <span class="nt">&lt;children&gt;</span>1<span class="nt">&lt;/children&gt;</span>
+                        <span class="nt">&lt;amount&gt;</span>150<span class="nt">&lt;/amount&gt;</span>
+                        <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
+                    <span class="nt">&lt;/price&gt;</span>
+                <span class="nt">&lt;/mealPlan&gt;</span>
+            <span class="nt">&lt;/roomRateDate&gt;</span>
+            <span class="nt">&lt;roomRateDate</span> <span class="na">dateFrom=</span><span class="s">"08/01/2016"</span> <span class="na">dateTo=</span><span class="s">"09/01/2016"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;availableQuota&gt;</span>5<span class="nt">&lt;/availableQuota&gt;</span>
                 <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-            <span class="nt">&lt;/price&gt;</span>
-        <span class="nt">&lt;/mealPlan&gt;</span>
-        <span class="nt">&lt;mealPlan</span> <span class="na">code=</span><span class="s">"BB"</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-            <span class="nt">&lt;minimumStay&gt;</span>2<span class="nt">&lt;/minimumStay&gt;</span>
-            <span class="nt">&lt;maximumStay&gt;</span>7<span class="nt">&lt;/maximumStay&gt;</span>
-            <span class="nt">&lt;closedOnCheckIn&gt;</span>false<span class="nt">&lt;/closedOnCheckIn&gt;</span>
-            <span class="nt">&lt;closedOnCheckOut&gt;</span>false<span class="nt">&lt;/closedOnCheckOut&gt;</span>
-            <span class="nt">&lt;release&gt;</span>7<span class="nt">&lt;/release&gt;</span>
-            <span class="nt">&lt;price&gt;</span>
-                <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
-                <span class="nt">&lt;children&gt;</span>0<span class="nt">&lt;/children&gt;</span>
-                <span class="nt">&lt;amount&gt;</span>130.0<span class="nt">&lt;/amount&gt;</span>
-                <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-            <span class="nt">&lt;/price&gt;</span>
-            <span class="nt">&lt;price&gt;</span>
-                <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
-                <span class="nt">&lt;children&gt;</span>1<span class="nt">&lt;/children&gt;</span>
-                <span class="nt">&lt;amount&gt;</span>150<span class="nt">&lt;/amount&gt;</span>
-                <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-            <span class="nt">&lt;/price&gt;</span>
-        <span class="nt">&lt;/mealPlan&gt;</span>
-    <span class="nt">&lt;/roomRate&gt;</span>
+                <span class="nt">&lt;mealPlan</span> <span class="na">code=</span><span class="s">"RO"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;minimumStay&gt;</span>2<span class="nt">&lt;/minimumStay&gt;</span>
+                    <span class="nt">&lt;maximumStay&gt;</span>7<span class="nt">&lt;/maximumStay&gt;</span>
+                    <span class="nt">&lt;closedOnCheckIn&gt;</span>false<span class="nt">&lt;/closedOnCheckIn&gt;</span>
+                    <span class="nt">&lt;closedOnCheckOut&gt;</span>false<span class="nt">&lt;/closedOnCheckOut&gt;</span>
+                    <span class="nt">&lt;release&gt;</span>0<span class="nt">&lt;/release&gt;</span>
+                    <span class="nt">&lt;price&gt;</span>
+                        <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
+                        <span class="nt">&lt;children&gt;</span>0<span class="nt">&lt;/children&gt;</span>
+                        <span class="nt">&lt;amount&gt;</span>110.0<span class="nt">&lt;/amount&gt;</span>
+                        <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
+                    <span class="nt">&lt;/price&gt;</span>
+                    <span class="nt">&lt;price&gt;</span>
+                        <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
+                        <span class="nt">&lt;children&gt;</span>1<span class="nt">&lt;/children&gt;</span>
+                        <span class="nt">&lt;amount&gt;</span>135.0<span class="nt">&lt;/amount&gt;</span>
+                        <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
+                    <span class="nt">&lt;/price&gt;</span>
+                <span class="nt">&lt;/mealPlan&gt;</span>
+            <span class="nt">&lt;/roomRateDate&gt;</span>
+        <span class="nt">&lt;/room&gt;</span>
+    <span class="nt">&lt;/rate&gt;</span>
 <span class="nt">&lt;/RoomRatesUpdateRequest&gt;</span>
 </code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"RoomRatesUpdateRequest"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -839,61 +891,93 @@ En el caso de que el hotel utilice varios, con el inventoryCode podrá distingui
       </span><span class="s2">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FOOBAR"</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="s2">"hotelCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1234"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"roomRate"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"rate"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
       </span><span class="s2">"rateCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BASE"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"roomCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DBL#STD"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"dateFrom"</span><span class="p">:</span><span class="w"> </span><span class="s2">"01/01/2016"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"dateTo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"07/01/2016"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"availableQuota"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"mealPlan"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-        </span><span class="p">{</span><span class="w">
-          </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RO"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"minimumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"maximumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"closedOnCheckIn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"closedOnCheckOut"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"release"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-              </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-              </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-              </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100.0"</span><span class="p">,</span><span class="w">
-              </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
-            </span><span class="p">},</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-              </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-              </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-              </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"125.0"</span><span class="p">,</span><span class="w">
-              </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
+      </span><span class="s2">"room"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"roomCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DBL#STD"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"roomRateDate"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"dateFrom"</span><span class="p">:</span><span class="w"> </span><span class="s2">"01/01/2016"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"dateTo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"07/01/2016"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"availableQuota"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"mealPlan"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+              </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RO"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"minimumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"maximumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"closedOnCheckIn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"closedOnCheckOut"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"release"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                  </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100.0"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
+                  </span><span class="p">},</span><span class="w">
+                  </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"125.0"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
+                  </span><span class="p">}</span><span class="w">
+                </span><span class="p">]</span><span class="w">
+              </span><span class="p">},</span><span class="w">
+              </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BB"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"minimumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"maximumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"closedOnCheckIn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"closedOnCheckOut"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"release"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                  </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"130.0"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
+                  </span><span class="p">},</span><span class="w">
+                  </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"150"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
+                  </span><span class="p">}</span><span class="w">
+                </span><span class="p">]</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+          </span><span class="p">},</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"dateFrom"</span><span class="p">:</span><span class="w"> </span><span class="s2">"08/01/2016"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"dateTo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"09/01/2016"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"availableQuota"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"mealPlan"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RO"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"minimumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"maximumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"closedOnCheckIn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"closedOnCheckOut"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"release"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                  </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"110.0"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                  </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135.0"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+              </span><span class="p">]</span><span class="w">
             </span><span class="p">}</span><span class="w">
-          </span><span class="p">]</span><span class="w">
-        </span><span class="p">},</span><span class="w">
-        </span><span class="p">{</span><span class="w">
-          </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BB"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"minimumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"maximumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"closedOnCheckIn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"closedOnCheckOut"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"release"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-              </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-              </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-              </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"130.0"</span><span class="p">,</span><span class="w">
-              </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
-            </span><span class="p">},</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-              </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-              </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-              </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"150"</span><span class="p">,</span><span class="w">
-              </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
-            </span><span class="p">}</span><span class="w">
-          </span><span class="p">]</span><span class="w">
-        </span><span class="p">}</span><span class="w">
-      </span><span class="p">]</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
     </span><span class="p">}</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -957,115 +1041,108 @@ Si únicamente se quiere actualizar inventario, no será necesario informar meal
 <td>Código de modalidad</td>
 </tr>
 <tr>
-<td>↳ dateFrom</td>
+<td>↳ roomRateDate</td>
+<td><strong>RomRateDate</strong></td>
+<td>Sí</td>
+<td>Información relativa a un rango de fechas</td>
+</tr>
+<tr>
+<td>↳↳ @dateFrom</td>
 <td><em>Date</em></td>
 <td>Sí</td>
 <td>Fecha desde (dd/MM/yyyy, rangos cerrados)</td>
 </tr>
 <tr>
-<td>↳ dateTo</td>
+<td>↳↳ @dateTo</td>
 <td><em>Date</em></td>
 <td>Sí</td>
 <td>Fecha hasta (dd/MM/yyyy, rangos cerrados)</td>
 </tr>
 <tr>
-<td>↳ availableQuota</td>
+<td>↳↳ availableQuota</td>
 <td><em>Integer</em></td>
 <td>Sí</td>
 <td>Unidades de cupo disponible</td>
 </tr>
 <tr>
-<td>↳ status</td>
+<td>↳↳ status</td>
 <td><em>Enum</em></td>
 <td>Sí</td>
 <td>Estado del inventario <sup>1</sup></td>
 </tr>
 <tr>
-<td>↳ mealPlan[]</td>
+<td>↳↳ mealPlan[]</td>
 <td><strong>MealPlan</strong></td>
 <td>No</td>
 <td>Información asociada al régimen alimenticio</td>
 </tr>
 <tr>
-<td>↳↳ @code</td>
+<td>↳↳↳ @code</td>
 <td><em>String</em></td>
 <td>Sí</td>
 <td>Código de régimen alimenticio</td>
 </tr>
 <tr>
-<td>↳↳ status</td>
-<td><em>Enum</em></td>
-<td>Sí</td>
-<td>Estado del régimen <sup>1</sup></td>
-</tr>
-<tr>
-<td>↳↳ minimumStay</td>
+<td>↳↳↳ minimumStay</td>
 <td><em>Integer</em></td>
 <td>Sí</td>
 <td>Días de estancia mínima (0: No hay estancia mínima)</td>
 </tr>
 <tr>
-<td>↳↳ maximumStay</td>
+<td>↳↳↳ maximumStay</td>
 <td><em>Integer</em></td>
 <td>Sí</td>
 <td>Días de estancia máxima (0: No hay límite de estancia)</td>
 </tr>
 <tr>
-<td>↳↳ release</td>
+<td>↳↳↳ release</td>
 <td><em>Integer</em></td>
 <td>Sí</td>
 <td>Días de release (0: No hay release)</td>
 </tr>
 <tr>
-<td>↳↳ closedOnCheckIn</td>
+<td>↳↳↳ closedOnCheckIn</td>
 <td><em>Boolean</em></td>
 <td>Sí</td>
 <td>Indica si no está permitida la entrada</td>
 </tr>
 <tr>
-<td>↳↳ closedOnCheckOut</td>
+<td>↳↳↳ closedOnCheckOut</td>
 <td><em>Boolean</em></td>
 <td>Sí</td>
 <td>Indica si no está permitida la salida</td>
 </tr>
 <tr>
-<td>↳↳ price[]</td>
+<td>↳↳↳ price[]</td>
 <td><strong>Price</strong></td>
 <td>Sí</td>
 <td>Precio para una ocupación</td>
 </tr>
 <tr>
-<td>↳↳↳ adults</td>
+<td>↳↳↳↳ adults</td>
 <td><em>Integer</em></td>
 <td>Sí</td>
 <td>Número de adultos</td>
 </tr>
 <tr>
-<td>↳↳↳ children</td>
+<td>↳↳↳↳ children</td>
 <td><em>Integer</em></td>
 <td>Sí</td>
 <td>Número de niños</td>
 </tr>
 <tr>
-<td>↳↳↳ amount</td>
+<td>↳↳↳↳ amount</td>
 <td><em>Double</em></td>
 <td>Sí</td>
 <td>Precio para el total de la ocupación (#.##)</td>
 </tr>
 <tr>
-<td>↳↳↳ status</td>
+<td>↳↳↳↳ status</td>
 <td><em>Enum</em></td>
 <td>Sí</td>
-<td>Estado de la ocupación <sup>1</sup></td>
+<td>Estado de la ocupación</td>
 </tr>
 </tbody></table>
-
-<aside class="notice">
-<sup>1</sup>&nbsp;&nbsp;&nbsp; Posibles valores, <b>Open</b>: a la venta; <b>Closed</b>: Cerrado; <b>OnRequest</b>: Se permite reservar, pero bajo petición.
-En caso de conflicto, siempre prevalecerá el estado más restrictivo (Closed > Request > Open). Por ejemplo, si a nivel de MealPlan el estado es Closed, 
-todas las ocupaciones a nivel de price también lo estarán, independientemente de que el estado se informe a Open. <br/>
-No obstante, podemos tener por ejemplo el mealPlan a la venta (Open) y cerrar (Closed) una ocupación concreta.
-</aside>
 
 <h3 id="roomratesupdateresponse">RoomRatesUpdateResponse</h3>
 
@@ -1145,259 +1222,255 @@ No obstante, podemos tener por ejemplo el mealPlan a la venta (Open) y cerrar (C
 <pre class="highlight xml tab-xml"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
 <span class="nt">&lt;RoomRatesRetrievalResponse&gt;</span>
     <span class="nt">&lt;sessionId&gt;</span>SUP#FOO#123456789<span class="nt">&lt;/sessionId&gt;</span>
-    <span class="nt">&lt;roomRate</span> <span class="na">rateCode=</span><span class="s">"BASE"</span> <span class="na">roomCode=</span><span class="s">"DBL#STD"</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;dateFrom&gt;</span>01/01/2017<span class="nt">&lt;/dateFrom&gt;</span>
-        <span class="nt">&lt;dateTo&gt;</span>31/01/2017<span class="nt">&lt;/dateTo&gt;</span>
-        <span class="nt">&lt;availableQuota&gt;</span>10<span class="nt">&lt;/availableQuota&gt;</span>
-        <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-        <span class="nt">&lt;mealPlan</span> <span class="na">code=</span><span class="s">"RO"</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-            <span class="nt">&lt;minimumStay&gt;</span>2<span class="nt">&lt;/minimumStay&gt;</span>
-            <span class="nt">&lt;maximumStay&gt;</span>7<span class="nt">&lt;/maximumStay&gt;</span>
-            <span class="nt">&lt;closedOnCheckIn&gt;</span>false<span class="nt">&lt;/closedOnCheckIn&gt;</span>
-            <span class="nt">&lt;closedOnCheckOut&gt;</span>false<span class="nt">&lt;/closedOnCheckOut&gt;</span>
-            <span class="nt">&lt;release&gt;</span>0<span class="nt">&lt;/release&gt;</span>
-            <span class="nt">&lt;price&gt;</span>
-                <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
-                <span class="nt">&lt;children&gt;</span>0<span class="nt">&lt;/children&gt;</span>
-                <span class="nt">&lt;amount&gt;</span>100.0<span class="nt">&lt;/amount&gt;</span>
+    <span class="nt">&lt;rate</span> <span class="na">rateCode=</span><span class="s">"BASE"</span> <span class="nt">&gt;</span>
+        <span class="nt">&lt;room</span> <span class="na">roomCode=</span><span class="s">"DBL#STD"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;roomRateDate</span> <span class="na">dateFrom=</span><span class="s">"01/01/2017"</span> <span class="na">dateTo=</span><span class="s">"31/01/2017"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;availableQuota&gt;</span>10<span class="nt">&lt;/availableQuota&gt;</span>
                 <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-            <span class="nt">&lt;/price&gt;</span>
-            <span class="nt">&lt;price&gt;</span>
-                <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
-                <span class="nt">&lt;children&gt;</span>1<span class="nt">&lt;/children&gt;</span>
-                <span class="nt">&lt;amount&gt;</span>125.0<span class="nt">&lt;/amount&gt;</span>
+                <span class="nt">&lt;mealPlan</span> <span class="na">code=</span><span class="s">"RO"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;minimumStay&gt;</span>2<span class="nt">&lt;/minimumStay&gt;</span>
+                    <span class="nt">&lt;maximumStay&gt;</span>7<span class="nt">&lt;/maximumStay&gt;</span>
+                    <span class="nt">&lt;closedOnCheckIn&gt;</span>false<span class="nt">&lt;/closedOnCheckIn&gt;</span>
+                    <span class="nt">&lt;closedOnCheckOut&gt;</span>false<span class="nt">&lt;/closedOnCheckOut&gt;</span>
+                    <span class="nt">&lt;release&gt;</span>0<span class="nt">&lt;/release&gt;</span>
+                    <span class="nt">&lt;price&gt;</span>
+                        <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
+                        <span class="nt">&lt;children&gt;</span>0<span class="nt">&lt;/children&gt;</span>
+                        <span class="nt">&lt;amount&gt;</span>100.0<span class="nt">&lt;/amount&gt;</span>
+                        <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
+                    <span class="nt">&lt;/price&gt;</span>
+                    <span class="nt">&lt;price&gt;</span>
+                        <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
+                        <span class="nt">&lt;children&gt;</span>1<span class="nt">&lt;/children&gt;</span>
+                        <span class="nt">&lt;amount&gt;</span>125.0<span class="nt">&lt;/amount&gt;</span>
+                        <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
+                    <span class="nt">&lt;/price&gt;</span>
+                <span class="nt">&lt;/mealPlan&gt;</span>
+                <span class="nt">&lt;mealPlan</span> <span class="na">code=</span><span class="s">"BB"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;minimumStay&gt;</span>2<span class="nt">&lt;/minimumStay&gt;</span>
+                    <span class="nt">&lt;maximumStay&gt;</span>7<span class="nt">&lt;/maximumStay&gt;</span>
+                    <span class="nt">&lt;closedOnCheckIn&gt;</span>false<span class="nt">&lt;/closedOnCheckIn&gt;</span>
+                    <span class="nt">&lt;closedOnCheckOut&gt;</span>false<span class="nt">&lt;/closedOnCheckOut&gt;</span>
+                    <span class="nt">&lt;release&gt;</span>7<span class="nt">&lt;/release&gt;</span>
+                    <span class="nt">&lt;price&gt;</span>
+                        <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
+                        <span class="nt">&lt;children&gt;</span>0<span class="nt">&lt;/children&gt;</span>
+                        <span class="nt">&lt;amount&gt;</span>130.0<span class="nt">&lt;/amount&gt;</span>
+                        <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
+                    <span class="nt">&lt;/price&gt;</span>
+                    <span class="nt">&lt;price&gt;</span>
+                        <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
+                        <span class="nt">&lt;children&gt;</span>1<span class="nt">&lt;/children&gt;</span>
+                        <span class="nt">&lt;amount&gt;</span>150<span class="nt">&lt;/amount&gt;</span>
+                        <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
+                    <span class="nt">&lt;/price&gt;</span>
+                <span class="nt">&lt;/mealPlan&gt;</span>
+            <span class="nt">&lt;/roomRateDate&gt;</span>
+            <span class="nt">&lt;roomRateDate</span> <span class="na">dateFrom=</span><span class="s">"01/02/2017"</span> <span class="na">dateTo=</span><span class="s">"28/02/2017"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;availableQuota&gt;</span>8<span class="nt">&lt;/availableQuota&gt;</span>
                 <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-            <span class="nt">&lt;/price&gt;</span>
-        <span class="nt">&lt;/mealPlan&gt;</span>
-        <span class="nt">&lt;mealPlan</span> <span class="na">code=</span><span class="s">"BB"</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-            <span class="nt">&lt;minimumStay&gt;</span>2<span class="nt">&lt;/minimumStay&gt;</span>
-            <span class="nt">&lt;maximumStay&gt;</span>7<span class="nt">&lt;/maximumStay&gt;</span>
-            <span class="nt">&lt;closedOnCheckIn&gt;</span>false<span class="nt">&lt;/closedOnCheckIn&gt;</span>
-            <span class="nt">&lt;closedOnCheckOut&gt;</span>false<span class="nt">&lt;/closedOnCheckOut&gt;</span>
-            <span class="nt">&lt;release&gt;</span>7<span class="nt">&lt;/release&gt;</span>
-            <span class="nt">&lt;price&gt;</span>
-                <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
-                <span class="nt">&lt;children&gt;</span>0<span class="nt">&lt;/children&gt;</span>
-                <span class="nt">&lt;amount&gt;</span>130.0<span class="nt">&lt;/amount&gt;</span>
+                <span class="nt">&lt;mealPlan</span> <span class="na">code=</span><span class="s">"RO"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;minimumStay&gt;</span>2<span class="nt">&lt;/minimumStay&gt;</span>                    
+                    <span class="nt">&lt;maximumStay&gt;</span>0<span class="nt">&lt;/maximumStay&gt;</span>
+                    <span class="nt">&lt;closedOnCheckIn&gt;</span>false<span class="nt">&lt;/closedOnCheckIn&gt;</span>
+                    <span class="nt">&lt;closedOnCheckOut&gt;</span>false<span class="nt">&lt;/closedOnCheckOut&gt;</span>
+                    <span class="nt">&lt;release&gt;</span>0<span class="nt">&lt;/release&gt;</span>
+                    <span class="nt">&lt;price&gt;</span>
+                        <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
+                        <span class="nt">&lt;children&gt;</span>0<span class="nt">&lt;/children&gt;</span>
+                        <span class="nt">&lt;amount&gt;</span>100.0<span class="nt">&lt;/amount&gt;</span>
+                        <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
+                    <span class="nt">&lt;/price&gt;</span>
+                    <span class="nt">&lt;price&gt;</span>
+                        <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
+                        <span class="nt">&lt;children&gt;</span>1<span class="nt">&lt;/children&gt;</span>
+                        <span class="nt">&lt;amount&gt;</span>125.0<span class="nt">&lt;/amount&gt;</span>
+                        <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
+                    <span class="nt">&lt;/price&gt;</span>
+                <span class="nt">&lt;/mealPlan&gt;</span>
+                <span class="nt">&lt;mealPlan</span> <span class="na">code=</span><span class="s">"BB"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;minimumStay&gt;</span>2<span class="nt">&lt;/minimumStay&gt;</span>
+                    <span class="nt">&lt;maximumStay&gt;</span>0<span class="nt">&lt;/maximumStay&gt;</span>
+                    <span class="nt">&lt;closedOnCheckIn&gt;</span>false<span class="nt">&lt;/closedOnCheckIn&gt;</span>
+                    <span class="nt">&lt;closedOnCheckOut&gt;</span>false<span class="nt">&lt;/closedOnCheckOut&gt;</span>
+                    <span class="nt">&lt;release&gt;</span>0<span class="nt">&lt;/release&gt;</span>
+                    <span class="nt">&lt;price&gt;</span>
+                        <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
+                        <span class="nt">&lt;children&gt;</span>0<span class="nt">&lt;/children&gt;</span>
+                        <span class="nt">&lt;amount&gt;</span>130.0<span class="nt">&lt;/amount&gt;</span>
+                        <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
+                    <span class="nt">&lt;/price&gt;</span>
+                    <span class="nt">&lt;price&gt;</span>
+                        <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
+                        <span class="nt">&lt;children&gt;</span>1<span class="nt">&lt;/children&gt;</span>
+                        <span class="nt">&lt;amount&gt;</span>150<span class="nt">&lt;/amount&gt;</span>
+                        <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
+                    <span class="nt">&lt;/price&gt;</span>
+                <span class="nt">&lt;/mealPlan&gt;</span>
+            <span class="nt">&lt;/roomRateDate&gt;</span>
+        <span class="nt">&lt;/room&gt;</span>
+        <span class="nt">&lt;room</span> <span class="na">roomCode=</span><span class="s">"SGL#STD"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;roomRateDate</span> <span class="na">dateFrom=</span><span class="s">"01/01/2017"</span> <span class="na">dateTo=</span><span class="s">"31/01/2017"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;availableQuota&gt;</span>1<span class="nt">&lt;/availableQuota&gt;</span>
                 <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-            <span class="nt">&lt;/price&gt;</span>
-            <span class="nt">&lt;price&gt;</span>
-                <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
-                <span class="nt">&lt;children&gt;</span>1<span class="nt">&lt;/children&gt;</span>
-                <span class="nt">&lt;amount&gt;</span>150<span class="nt">&lt;/amount&gt;</span>
-                <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-            <span class="nt">&lt;/price&gt;</span>
-        <span class="nt">&lt;/mealPlan&gt;</span>
-    <span class="nt">&lt;/roomRate&gt;</span>
-    <span class="nt">&lt;roomRate</span> <span class="na">rateCode=</span><span class="s">"BASE"</span> <span class="na">roomCode=</span><span class="s">"DBL#STD"</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;dateFrom&gt;</span>01/02/2017<span class="nt">&lt;/dateFrom&gt;</span>
-        <span class="nt">&lt;dateTo&gt;</span>28/02/2017<span class="nt">&lt;/dateTo&gt;</span>
-        <span class="nt">&lt;availableQuota&gt;</span>5<span class="nt">&lt;/availableQuota&gt;</span>
-        <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-        <span class="nt">&lt;mealPlan</span> <span class="na">code=</span><span class="s">"RO"</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-            <span class="nt">&lt;minimumStay&gt;</span>2<span class="nt">&lt;/minimumStay&gt;</span>
-            <span class="nt">&lt;maximumStay&gt;</span>7<span class="nt">&lt;/maximumStay&gt;</span>
-            <span class="nt">&lt;closedOnCheckIn&gt;</span>false<span class="nt">&lt;/closedOnCheckIn&gt;</span>
-            <span class="nt">&lt;closedOnCheckOut&gt;</span>false<span class="nt">&lt;/closedOnCheckOut&gt;</span>
-            <span class="nt">&lt;release&gt;</span>0<span class="nt">&lt;/release&gt;</span>
-            <span class="nt">&lt;price&gt;</span>
-                <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
-                <span class="nt">&lt;children&gt;</span>0<span class="nt">&lt;/children&gt;</span>
-                <span class="nt">&lt;amount&gt;</span>110.0<span class="nt">&lt;/amount&gt;</span>
-                <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-            <span class="nt">&lt;/price&gt;</span>
-            <span class="nt">&lt;price&gt;</span>
-                <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
-                <span class="nt">&lt;children&gt;</span>1<span class="nt">&lt;/children&gt;</span>
-                <span class="nt">&lt;amount&gt;</span>135.0<span class="nt">&lt;/amount&gt;</span>
-                <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-            <span class="nt">&lt;/price&gt;</span>
-        <span class="nt">&lt;/mealPlan&gt;</span>
-        <span class="nt">&lt;mealPlan</span> <span class="na">code=</span><span class="s">"BB"</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-            <span class="nt">&lt;minimumStay&gt;</span>2<span class="nt">&lt;/minimumStay&gt;</span>
-            <span class="nt">&lt;maximumStay&gt;</span>7<span class="nt">&lt;/maximumStay&gt;</span>
-            <span class="nt">&lt;closedOnCheckIn&gt;</span>false<span class="nt">&lt;/closedOnCheckIn&gt;</span>
-            <span class="nt">&lt;closedOnCheckOut&gt;</span>false<span class="nt">&lt;/closedOnCheckOut&gt;</span>
-            <span class="nt">&lt;release&gt;</span>7<span class="nt">&lt;/release&gt;</span>
-            <span class="nt">&lt;price&gt;</span>
-                <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
-                <span class="nt">&lt;children&gt;</span>0<span class="nt">&lt;/children&gt;</span>
-                <span class="nt">&lt;amount&gt;</span>130.0<span class="nt">&lt;/amount&gt;</span>
-                <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-            <span class="nt">&lt;/price&gt;</span>
-            <span class="nt">&lt;price&gt;</span>
-                <span class="nt">&lt;adults&gt;</span>2<span class="nt">&lt;/adults&gt;</span>
-                <span class="nt">&lt;children&gt;</span>1<span class="nt">&lt;/children&gt;</span>
-                <span class="nt">&lt;amount&gt;</span>150<span class="nt">&lt;/amount&gt;</span>
-                <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-            <span class="nt">&lt;/price&gt;</span>
-        <span class="nt">&lt;/mealPlan&gt;</span>
-    <span class="nt">&lt;/roomRate&gt;</span>
-    <span class="nt">&lt;roomRate</span> <span class="na">rateCode=</span><span class="s">"BASE"</span> <span class="na">roomCode=</span><span class="s">"SGL#STD"</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;dateFrom&gt;</span>01/01/2017<span class="nt">&lt;/dateFrom&gt;</span>
-        <span class="nt">&lt;dateTo&gt;</span>31/01/2017<span class="nt">&lt;/dateTo&gt;</span>
-        <span class="nt">&lt;availableQuota&gt;</span>1<span class="nt">&lt;/availableQuota&gt;</span>
-        <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-        <span class="nt">&lt;mealPlan</span> <span class="na">code=</span><span class="s">"RO"</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-            <span class="nt">&lt;minimumStay&gt;</span>2<span class="nt">&lt;/minimumStay&gt;</span>
-            <span class="nt">&lt;maximumStay&gt;</span>7<span class="nt">&lt;/maximumStay&gt;</span>
-            <span class="nt">&lt;closedOnCheckIn&gt;</span>false<span class="nt">&lt;/closedOnCheckIn&gt;</span>
-            <span class="nt">&lt;closedOnCheckOut&gt;</span>false<span class="nt">&lt;/closedOnCheckOut&gt;</span>
-            <span class="nt">&lt;release&gt;</span>0<span class="nt">&lt;/release&gt;</span>
-            <span class="nt">&lt;price&gt;</span>
-                <span class="nt">&lt;adults&gt;</span>1<span class="nt">&lt;/adults&gt;</span>
-                <span class="nt">&lt;children&gt;</span>0<span class="nt">&lt;/children&gt;</span>
-                <span class="nt">&lt;amount&gt;</span>80.0<span class="nt">&lt;/amount&gt;</span>
-                <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
-            <span class="nt">&lt;/price&gt;</span>
-        <span class="nt">&lt;/mealPlan&gt;</span>
-    <span class="nt">&lt;/roomRate&gt;</span>
+                <span class="nt">&lt;mealPlan</span> <span class="na">code=</span><span class="s">"RO"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;minimumStay&gt;</span>2<span class="nt">&lt;/minimumStay&gt;</span>
+                    <span class="nt">&lt;maximumStay&gt;</span>7<span class="nt">&lt;/maximumStay&gt;</span>
+                    <span class="nt">&lt;closedOnCheckIn&gt;</span>false<span class="nt">&lt;/closedOnCheckIn&gt;</span>
+                    <span class="nt">&lt;closedOnCheckOut&gt;</span>false<span class="nt">&lt;/closedOnCheckOut&gt;</span>
+                    <span class="nt">&lt;release&gt;</span>0<span class="nt">&lt;/release&gt;</span>
+                    <span class="nt">&lt;price&gt;</span>
+                        <span class="nt">&lt;adults&gt;</span>1<span class="nt">&lt;/adults&gt;</span>
+                        <span class="nt">&lt;children&gt;</span>0<span class="nt">&lt;/children&gt;</span>
+                        <span class="nt">&lt;amount&gt;</span>80.0<span class="nt">&lt;/amount&gt;</span>
+                        <span class="nt">&lt;status&gt;</span>Open<span class="nt">&lt;/status&gt;</span>
+                    <span class="nt">&lt;/price&gt;</span>
+                <span class="nt">&lt;/mealPlan&gt;</span>
+            <span class="nt">&lt;/roomRateDate&gt;</span>
+        <span class="nt">&lt;/room&gt;</span>
+    <span class="nt">&lt;/rate&gt;</span>
 <span class="nt">&lt;/RoomRatesRetrievalResponse&gt;</span>
+
 </code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"RoomRatesRetrievalResponse"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="s2">"sessionId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SUP#FOO#123456789"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"roomRate"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"rateCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BASE"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"roomCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DBL#STD"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"dateFrom"</span><span class="p">:</span><span class="w"> </span><span class="s2">"01/01/2017"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"dateTo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"31/01/2017"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"availableQuota"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"mealPlan"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-          </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RO"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"rate"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"rateCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BASE"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"room"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"roomCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DBL#STD"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"roomRateDate"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"dateFrom"</span><span class="p">:</span><span class="w"> </span><span class="s2">"01/01/2017"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"dateTo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"31/01/2017"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"availableQuota"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"mealPlan"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                  </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RO"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"minimumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"maximumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"closedOnCheckIn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"closedOnCheckOut"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"release"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                      </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100.0"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                      </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"125.0"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                  </span><span class="p">]</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                  </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BB"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"minimumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"maximumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"closedOnCheckIn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"closedOnCheckOut"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"release"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                      </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"130.0"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                      </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"150"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                  </span><span class="p">]</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+              </span><span class="p">]</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"dateFrom"</span><span class="p">:</span><span class="w"> </span><span class="s2">"01/02/2017"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"dateTo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"28/02/2017"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"availableQuota"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"mealPlan"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                  </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RO"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"minimumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"maximumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"closedOnCheckIn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"closedOnCheckOut"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"release"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                      </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100.0"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                      </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"125.0"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                  </span><span class="p">]</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                  </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BB"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"minimumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"maximumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"closedOnCheckIn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"closedOnCheckOut"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"release"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                      </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"130.0"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                      </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"150"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                  </span><span class="p">]</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+              </span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">]</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"roomCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SGL#STD"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"roomRateDate"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"dateFrom"</span><span class="p">:</span><span class="w"> </span><span class="s2">"01/01/2017"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"dateTo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"31/01/2017"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"availableQuota"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"minimumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"maximumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"closedOnCheckIn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"closedOnCheckOut"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"release"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-              </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"mealPlan"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RO"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"minimumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"maximumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"closedOnCheckIn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"closedOnCheckOut"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"release"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
                 </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100.0"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
-              </span><span class="p">},</span><span class="w">
-              </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"125.0"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"80.0"</span><span class="p">,</span><span class="w">
                 </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
               </span><span class="p">}</span><span class="w">
-            </span><span class="p">]</span><span class="w">
-          </span><span class="p">},</span><span class="w">
-          </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BB"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"minimumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"maximumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"closedOnCheckIn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"closedOnCheckOut"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"release"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-              </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"130.0"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
-              </span><span class="p">},</span><span class="w">
-              </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"150"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
-              </span><span class="p">}</span><span class="w">
-            </span><span class="p">]</span><span class="w">
-          </span><span class="p">}</span><span class="w">
-        </span><span class="p">]</span><span class="w">
-      </span><span class="p">},</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"rateCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BASE"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"roomCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DBL#STD"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"dateFrom"</span><span class="p">:</span><span class="w"> </span><span class="s2">"01/02/2017"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"dateTo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"28/02/2017"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"availableQuota"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"mealPlan"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-          </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RO"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"minimumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"maximumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"closedOnCheckIn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"closedOnCheckOut"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"release"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-              </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"110.0"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
-              </span><span class="p">},</span><span class="w">
-              </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"135.0"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
-              </span><span class="p">}</span><span class="w">
-            </span><span class="p">]</span><span class="w">
-          </span><span class="p">},</span><span class="w">
-          </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BB"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"minimumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"maximumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"closedOnCheckIn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"closedOnCheckOut"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"release"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-              </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"130.0"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
-              </span><span class="p">},</span><span class="w">
-              </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"150"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
-              </span><span class="p">}</span><span class="w">
-            </span><span class="p">]</span><span class="w">
-          </span><span class="p">}</span><span class="w">
-        </span><span class="p">]</span><span class="w">
-      </span><span class="p">},</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"rateCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BASE"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"roomCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SGL#STD"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"dateFrom"</span><span class="p">:</span><span class="w"> </span><span class="s2">"01/01/2017"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"dateTo"</span><span class="p">:</span><span class="w"> </span><span class="s2">"31/01/2017"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"availableQuota"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"mealPlan"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-          </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RO"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"minimumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"maximumStay"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"closedOnCheckIn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"closedOnCheckOut"</span><span class="p">:</span><span class="w"> </span><span class="s2">"false"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"release"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-          </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"adults"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"80.0"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Open"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
           </span><span class="p">}</span><span class="w">
         </span><span class="p">}</span><span class="w">
-      </span><span class="p">}</span><span class="w">
-    </span><span class="p">]</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
@@ -1473,103 +1546,103 @@ Opcionalmente se puede filtrar por una tarifa concreta: rateCode</p>
 <td>Código de modalidad</td>
 </tr>
 <tr>
-<td>↳ dateFrom</td>
+<td>↳ roomRateDate</td>
+<td><strong>RomRateDate</strong></td>
+<td>Sí</td>
+<td>Información relativa a un rango de fechas</td>
+</tr>
+<tr>
+<td>↳↳ @dateFrom</td>
 <td><em>Date</em></td>
 <td>Sí</td>
 <td>Fecha desde (dd/MM/yyyy, rangos cerrados)</td>
 </tr>
 <tr>
-<td>↳ dateTo</td>
+<td>↳↳ @dateTo</td>
 <td><em>Date</em></td>
 <td>Sí</td>
 <td>Fecha hasta (dd/MM/yyyy, rangos cerrados)</td>
 </tr>
 <tr>
-<td>↳ availableQuota</td>
+<td>↳↳ availableQuota</td>
 <td><em>Integer</em></td>
 <td>Sí</td>
 <td>Unidades de cupo disponible</td>
 </tr>
 <tr>
-<td>↳ status</td>
+<td>↳↳ status</td>
 <td><em>Enum</em></td>
 <td>Sí</td>
-<td>Estado del inventario</td>
+<td>Estado del inventario <sup>1</sup></td>
 </tr>
 <tr>
-<td>↳ mealPlan[]</td>
+<td>↳↳ mealPlan[]</td>
 <td><strong>MealPlan</strong></td>
 <td>No</td>
 <td>Información asociada al régimen alimenticio</td>
 </tr>
 <tr>
-<td>↳↳ @code</td>
+<td>↳↳↳ @code</td>
 <td><em>String</em></td>
 <td>Sí</td>
 <td>Código de régimen alimenticio</td>
 </tr>
 <tr>
-<td>↳↳ status</td>
-<td><em>Enum</em></td>
-<td>Sí</td>
-<td>Estado del régimen</td>
-</tr>
-<tr>
-<td>↳↳ minimumStay</td>
+<td>↳↳↳ minimumStay</td>
 <td><em>Integer</em></td>
 <td>Sí</td>
 <td>Días de estancia mínima (0: No hay estancia mínima)</td>
 </tr>
 <tr>
-<td>↳↳ maximumStay</td>
+<td>↳↳↳ maximumStay</td>
 <td><em>Integer</em></td>
 <td>Sí</td>
 <td>Días de estancia máxima (0: No hay límite de estancia)</td>
 </tr>
 <tr>
-<td>↳↳ release</td>
+<td>↳↳↳ release</td>
 <td><em>Integer</em></td>
 <td>Sí</td>
 <td>Días de release (0: No hay release)</td>
 </tr>
 <tr>
-<td>↳↳ closedOnCheckIn</td>
+<td>↳↳↳ closedOnCheckIn</td>
 <td><em>Boolean</em></td>
 <td>Sí</td>
 <td>Indica si no está permitida la entrada</td>
 </tr>
 <tr>
-<td>↳↳ closedOnCheckOut</td>
+<td>↳↳↳ closedOnCheckOut</td>
 <td><em>Boolean</em></td>
 <td>Sí</td>
 <td>Indica si no está permitida la salida</td>
 </tr>
 <tr>
-<td>↳↳ price[]</td>
+<td>↳↳↳ price[]</td>
 <td><strong>Price</strong></td>
 <td>Sí</td>
 <td>Precio para una ocupación</td>
 </tr>
 <tr>
-<td>↳↳↳ adults</td>
+<td>↳↳↳↳ adults</td>
 <td><em>Integer</em></td>
 <td>Sí</td>
 <td>Número de adultos</td>
 </tr>
 <tr>
-<td>↳↳↳ children</td>
+<td>↳↳↳↳ children</td>
 <td><em>Integer</em></td>
 <td>Sí</td>
 <td>Número de niños</td>
 </tr>
 <tr>
-<td>↳↳↳ amount</td>
+<td>↳↳↳↳ amount</td>
 <td><em>Double</em></td>
 <td>Sí</td>
 <td>Precio para el total de la ocupación (#.##)</td>
 </tr>
 <tr>
-<td>↳↳↳ status</td>
+<td>↳↳↳↳ status</td>
 <td><em>Enum</em></td>
 <td>Sí</td>
 <td>Estado de la ocupación</td>
@@ -2142,7 +2215,7 @@ o bien las reservas de un hotel creadas, canceladas o modificadas dentro de un r
 <tr>
 <td>↳↳↳ rateCode</td>
 <td><em>String</em></td>
-<td>Sí</td>
+<td>No</td>
 <td>Código de tarifa</td>
 </tr>
 <tr>
