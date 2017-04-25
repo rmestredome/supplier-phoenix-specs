@@ -290,12 +290,14 @@ gestionando el hotel a través de la extranet web. Ambos modos de mantenimiento 
 <p>Ejemplo elemento credentials, presente en todas las peticiones XML</p>
 </blockquote>
 <pre class="highlight xml tab-xml"><code><span class="nt">&lt;credentials&gt;</span>
+    <span class="nt">&lt;systemCode&gt;</span>SFO<span class="nt">&lt;/systemCode&gt;</span>
     <span class="nt">&lt;vendorCode&gt;</span>FOO<span class="nt">&lt;/vendorCode&gt;</span>
     <span class="nt">&lt;user&gt;</span>BAR<span class="nt">&lt;/user&gt;</span>
     <span class="nt">&lt;password&gt;</span>FOOBAR<span class="nt">&lt;/password&gt;</span>
 <span class="nt">&lt;/credentials&gt;</span>
 </code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
    </span><span class="s2">"credentials"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+       </span><span class="s2">"systemCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SFO"</span><span class="p">,</span><span class="w">
        </span><span class="s2">"vendorCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FOO"</span><span class="p">,</span><span class="w">
        </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BAR"</span><span class="p">,</span><span class="w">
        </span><span class="s2">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FOOBAR"</span><span class="w">
@@ -321,6 +323,7 @@ El proveedor puede elegir si utilizar XML o JSON:</p>
 <pre class="highlight xml tab-xml"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
 <span class="nt">&lt;HotelConfigurationRequest&gt;</span>
    <span class="nt">&lt;credentials&gt;</span>
+      <span class="nt">&lt;systemCode&gt;</span>SFO<span class="nt">&lt;/systemCode&gt;</span>
       <span class="nt">&lt;vendorCode&gt;</span>FOO<span class="nt">&lt;/vendorCode&gt;</span>
       <span class="nt">&lt;user&gt;</span>BAR<span class="nt">&lt;/user&gt;</span>
       <span class="nt">&lt;password&gt;</span>FOOBAR<span class="nt">&lt;/password&gt;</span>
@@ -330,6 +333,7 @@ El proveedor puede elegir si utilizar XML o JSON:</p>
 </code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"HotelConfigurationRequest"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="s2">"credentials"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"systemCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SFO"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"vendorCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FOO"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BAR"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FOOBAR"</span><span class="w">
@@ -735,6 +739,7 @@ En el caso de que el hotel utilice varios, con el inventoryCode se podrá distin
 <pre class="highlight xml tab-xml"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
 <span class="nt">&lt;RoomRatesUpdateRequest&gt;</span>
     <span class="nt">&lt;credentials&gt;</span>
+        <span class="nt">&lt;systemCode&gt;</span>SFO<span class="nt">&lt;/systemCode&gt;</span>
         <span class="nt">&lt;vendorCode&gt;</span>FOO<span class="nt">&lt;/vendorCode&gt;</span>
         <span class="nt">&lt;user&gt;</span>BAR<span class="nt">&lt;/user&gt;</span>
         <span class="nt">&lt;password&gt;</span>FOOBAR<span class="nt">&lt;/password&gt;</span>
@@ -762,6 +767,7 @@ En el caso de que el hotel utilice varios, con el inventoryCode se podrá distin
 </code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"RoomRatesUpdateRequest"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="s2">"credentials"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"systemCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SFO"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"vendorCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FOO"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BAR"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FOOBAR"</span><span class="w">
@@ -808,6 +814,7 @@ En el caso de que el hotel utilice varios, con el inventoryCode se podrá distin
 <pre class="highlight xml tab-xml"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
 <span class="nt">&lt;RoomRatesUpdateRequest&gt;</span>
     <span class="nt">&lt;credentials&gt;</span>
+        <span class="nt">&lt;systemCode&gt;</span>SFO<span class="nt">&lt;/systemCode&gt;</span>
         <span class="nt">&lt;vendorCode&gt;</span>FOO<span class="nt">&lt;/vendorCode&gt;</span>
         <span class="nt">&lt;user&gt;</span>BAR<span class="nt">&lt;/user&gt;</span>
         <span class="nt">&lt;password&gt;</span>FOOBAR<span class="nt">&lt;/password&gt;</span>
@@ -886,6 +893,7 @@ En el caso de que el hotel utilice varios, con el inventoryCode se podrá distin
 </code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"RoomRatesUpdateRequest"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="s2">"credentials"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"systemCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SFO"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"vendorCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FOO"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BAR"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FOOBAR"</span><span class="w">
@@ -1197,6 +1205,7 @@ Si únicamente se quiere actualizar inventario, no será necesario informar meal
 <pre class="highlight xml tab-xml"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
 <span class="nt">&lt;RoomRatesRetrievalRequest&gt;</span>   
     <span class="nt">&lt;credentials&gt;</span>
+        <span class="nt">&lt;systemCode&gt;</span>SFO<span class="nt">&lt;/systemCode&gt;</span>
         <span class="nt">&lt;vendorCode&gt;</span>FOO<span class="nt">&lt;/vendorCode&gt;</span>
         <span class="nt">&lt;user&gt;</span>BAR<span class="nt">&lt;/user&gt;</span>
         <span class="nt">&lt;password&gt;</span>FOOBAR<span class="nt">&lt;/password&gt;</span>
@@ -1207,6 +1216,7 @@ Si únicamente se quiere actualizar inventario, no será necesario informar meal
 </code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"RoomRatesRetrievalRequest"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="s2">"credentials"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"systemCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SFO"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"vendorCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FOO"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BAR"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FOOBAR"</span><span class="w">
@@ -1682,6 +1692,7 @@ Opcionalmente se puede filtrar por una tarifa concreta: rateCode</p>
 <pre class="highlight xml tab-xml"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
 <span class="nt">&lt;BookingRetrievalRequest&gt;</span>
     <span class="nt">&lt;credentials&gt;</span>
+        <span class="nt">&lt;systemCode&gt;</span>SFO<span class="nt">&lt;/systemCode&gt;</span>
         <span class="nt">&lt;vendorCode&gt;</span>FOO<span class="nt">&lt;/vendorCode&gt;</span>
         <span class="nt">&lt;user&gt;</span>BAR<span class="nt">&lt;/user&gt;</span>
         <span class="nt">&lt;password&gt;</span>FOOBAR<span class="nt">&lt;/password&gt;</span>
@@ -1691,6 +1702,7 @@ Opcionalmente se puede filtrar por una tarifa concreta: rateCode</p>
 </code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"BookingRetrievalRequest"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="s2">"credentials"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"systemCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SFO"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"vendorCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FOO"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BAR"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FOOBAR"</span><span class="w">
@@ -1706,6 +1718,7 @@ Opcionalmente se puede filtrar por una tarifa concreta: rateCode</p>
 <pre class="highlight xml tab-xml"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
 <span class="nt">&lt;BookingRetrievalRequest&gt;</span>
     <span class="nt">&lt;credentials&gt;</span>
+        <span class="nt">&lt;systemCode&gt;</span>SFO<span class="nt">&lt;/systemCode&gt;</span>
         <span class="nt">&lt;vendorCode&gt;</span>FOO<span class="nt">&lt;/vendorCode&gt;</span>
         <span class="nt">&lt;user&gt;</span>BAR<span class="nt">&lt;/user&gt;</span>
         <span class="nt">&lt;password&gt;</span>FOOBAR<span class="nt">&lt;/password&gt;</span>
@@ -1717,6 +1730,7 @@ Opcionalmente se puede filtrar por una tarifa concreta: rateCode</p>
 </code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"BookingRetrievalRequest"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="s2">"credentials"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"systemCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SFO"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"vendorCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FOO"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BAR"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"password"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FOOBAR"</span><span class="w">
