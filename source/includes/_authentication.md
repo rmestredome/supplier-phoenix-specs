@@ -4,6 +4,7 @@
 
 ````xml
 <credentials>
+    <systemCode>SFO</systemCode>
     <vendorCode>FOO</vendorCode>
     <user>BAR</user>
     <password>FOOBAR</password>
@@ -13,6 +14,7 @@
 ````json
 {
    "credentials": {
+       "systemCode": "SFO",
        "vendorCode": "FOO",
        "user": "BAR",
        "password": "FOOBAR"

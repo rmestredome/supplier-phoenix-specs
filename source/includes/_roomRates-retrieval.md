@@ -7,6 +7,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RoomRatesRetrievalRequest>   
     <credentials>
+        <systemCode>SFO</systemCode>
         <vendorCode>FOO</vendorCode>
         <user>BAR</user>
         <password>FOOBAR</password>
@@ -20,6 +21,7 @@
 {
   "RoomRatesRetrievalRequest": {
     "credentials": {
+      "systemCode": "SFO",
       "vendorCode": "FOO",
       "user": "BAR",
       "password": "FOOBAR"

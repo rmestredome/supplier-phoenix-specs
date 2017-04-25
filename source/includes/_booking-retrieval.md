@@ -7,6 +7,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <BookingRetrievalRequest>
     <credentials>
+        <systemCode>SFO</systemCode>
         <vendorCode>FOO</vendorCode>
         <user>BAR</user>
         <password>FOOBAR</password>
@@ -19,6 +20,7 @@
 {
   "BookingRetrievalRequest": {
     "credentials": {
+      "systemCode": "SFO",
       "vendorCode": "FOO",
       "user": "BAR",
       "password": "FOOBAR"
@@ -35,6 +37,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <BookingRetrievalRequest>
     <credentials>
+        <systemCode>SFO</systemCode>
         <vendorCode>FOO</vendorCode>
         <user>BAR</user>
         <password>FOOBAR</password>
@@ -49,6 +52,7 @@
 {
   "BookingRetrievalRequest": {
     "credentials": {
+      "systemCode": "SFO",
       "vendorCode": "FOO",
       "user": "BAR",
       "password": "FOOBAR"

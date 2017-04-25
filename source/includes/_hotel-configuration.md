@@ -7,6 +7,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <HotelConfigurationRequest>
    <credentials>
+      <systemCode>SFO</systemCode>
       <vendorCode>FOO</vendorCode>
       <user>BAR</user>
       <password>FOOBAR</password>
@@ -19,6 +20,7 @@
 {
   "HotelConfigurationRequest": {
     "credentials": {
+      "systemCode": "SFO",
       "vendorCode": "FOO",
       "user": "BAR",
       "password": "FOOBAR"
