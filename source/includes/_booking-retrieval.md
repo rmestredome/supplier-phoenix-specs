@@ -330,9 +330,14 @@ reference | *String* | No<sup>1</sup> | Localizador de la reserva
 hotelCode | *Integer* | Sí | Código de hotel
 dateFrom | *DateTime* | Sí | Fecha desde. Devolverá todas las reservas que se hayan creado, cancelado o modificado a partir de esta fecha (dd/MM/yyy HH:mm)
 dateTo | *DateTime* | Sí | Fecha hasta. Devolverá todas las reservas que se hayan creado, cancelado o modificado hasta esta fecha (dd/MM/yyy HH:mm)
+notificationStatus | *Enum* | No | Filtro por estado de notificación de reserva (Delivered: Notificada / UnDelivered: No notificada) No<sup>2</sup>
 
 <aside class="notice">
 <sup>1</sup>&nbsp;&nbsp;&nbsp;Si no se informa localizador de la reserva (reference), es obligatorio informar el resto de parámetros (hotelCode, dateFrom, dateTo)
+</aside>
+
+<aside class="notice">
+<sup>2</sup>&nbsp;&nbsp;&nbsp;Si no se informa, se devolverán todas las reservas sea cual sea su estado. Una reserva se marca como notificada cuando se entrega vía PUSH o bien se devuelve en alguna respuesta BookingRetrievalResponse.
 </aside>
 
 ### RoomRatesRetrievalResponse
