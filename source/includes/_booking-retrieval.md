@@ -377,7 +377,7 @@ booking[] | **Booking** | No | Información de una reserva de hotel
 ↳↳↳ type| *Enum* | Sí | Tipo (Adult, Child, Baby)
 ↳↳↳ amount| *Double* | Sí | Importe correspondiente al pasajero
 ↳↳↳ birthDate| *Date* | No | Fecha de nacimiento
-↳ bookingSupplement[]| **BookingSupplement** | No | Información de suplemento opcional reservado
+↳ bookingSupplement[]| **BookingSupplement** | No | Información de suplemento reservado
 ↳↳ code| *String* | Sí | Código del suplemento opcional reservado
 ↳↳ name| *String* | Sí | Nombre del suplemento opcional reservado
 ↳↳ description| *String* | No | Descripción detallada del suplemento opcional reservado
@@ -386,6 +386,7 @@ booking[] | **Booking** | No | Información de una reserva de hotel
 ↳↳ bookingRoomId| *Integer* | No | Identificador de la habitación reservada, si el suplemento referencia a una habitación en concreto
 ↳↳ guestId[]| *Integer* | No | Identificador del pasajero al que se hace referencia, si el suplemento referencia a un pasajero/os en concreto
 ↳↳ amount| *Double* | Sí | Importe total del suplemento opcional reservado
+↳↳ mandatory| *Boolean* | Sí | Indica si el suplemento es obligatorio (true) o opcional (false)
 ↳ paymentCardDetail| **PaymentCardDetail** | No | Detalles de la tarjeta que ha realizado el pago
 ↳↳ holder| *String* | Sí | Nombre del titular de la tarjeta
 ↳↳ number| *String* | Sí | Número de la tarjeta
