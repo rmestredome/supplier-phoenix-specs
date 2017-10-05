@@ -2034,10 +2034,20 @@ o bien las reservas de un hotel creadas, canceladas o modificadas dentro de un r
 <td>Sí</td>
 <td>Fecha hasta. Devolverá todas las reservas que se hayan creado, cancelado o modificado hasta esta fecha (dd/MM/yyy HH:mm)</td>
 </tr>
+<tr>
+<td>notificationStatus</td>
+<td><em>Enum</em></td>
+<td>No</td>
+<td>Filtro por estado de notificación de reserva (Delivered: Notificada / UnDelivered: No notificada) No<sup>2</sup></td>
+</tr>
 </tbody></table>
 
 <aside class="notice">
 <sup>1</sup>&nbsp;&nbsp;&nbsp;Si no se informa localizador de la reserva (reference), es obligatorio informar el resto de parámetros (hotelCode, dateFrom, dateTo)
+</aside>
+
+<aside class="notice">
+<sup>2</sup>&nbsp;&nbsp;&nbsp;Si no se informa, se devolverán todas las reservas sea cual sea su estado. Una reserva se marca como notificada cuando se entrega vía PUSH o bien se devuelve en alguna respuesta BookingRetrievalResponse.
 </aside>
 
 <h3 id="roomratesretrievalresponse">RoomRatesRetrievalResponse</h3>
@@ -2272,7 +2282,7 @@ o bien las reservas de un hotel creadas, canceladas o modificadas dentro de un r
 <td>↳ bookingSupplement[]</td>
 <td><strong>BookingSupplement</strong></td>
 <td>No</td>
-<td>Información de suplemento opcional reservado</td>
+<td>Información de suplemento reservado</td>
 </tr>
 <tr>
 <td>↳↳ code</td>
@@ -2321,6 +2331,12 @@ o bien las reservas de un hotel creadas, canceladas o modificadas dentro de un r
 <td><em>Double</em></td>
 <td>Sí</td>
 <td>Importe total del suplemento opcional reservado</td>
+</tr>
+<tr>
+<td>↳↳ mandatory</td>
+<td><em>Boolean</em></td>
+<td>Sí</td>
+<td>Indica si el suplemento es obligatorio (true) o opcional (false)</td>
 </tr>
 <tr>
 <td>↳ paymentCardDetail</td>
