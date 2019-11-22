@@ -18,7 +18,7 @@ Se necesita:
 
 ### Arrancar el proyecto en local
 
-1. Clonar *este repositorio*
+1. Clonar *este repositorio*.
 2. Inicializar y arrancar:
 
 ```shell
